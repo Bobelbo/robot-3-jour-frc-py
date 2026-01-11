@@ -1,27 +1,11 @@
-from config import config
 from .remoteInput import RemoteInput
 from ..subsystemInterface import SubsystemInterface
 
 class RemoteControllerSS(SubsystemInterface):
     inputs: dict[str, RemoteInput[bool]|RemoteInput[float]] = {}
 
-    _instance = None
-
-    # @staticmethod
-    # def get_instance():
-    #     """Static access method."""
-    #     if RemoteControllerSS._instance is None:
-    #         RemoteControllerSS._instance = RemoteControllerSS()
-    #     return RemoteControllerSS._instance
-
-    def __new__(cls):
-        """Static access method."""
-        if RemoteControllerSS._instance is None:
-            RemoteControllerSS._instance = super(RemoteControllerSS, cls).__new__(cls)  
-        return RemoteControllerSS._instance
-
-    def __init__(self):
-        """SHOULD NOT BE CALLED DIRECTLY. USE get_instance() INSTEAD."""
+    def __init__(self, config):
+        """For initialization with config"""
         for axis_id, axis_func in config.get("axies"):
             self.inputs[axis_id] = RemoteInput(axis_func)
 
@@ -40,11 +24,8 @@ class RemoteControllerSS(SubsystemInterface):
 
     def bind(self, input_id: str, command) -> None:
         """Method to bind a command to a specific input."""
-        self.inputs[input_id].sub.append(command)
+        self.inputs[input_id].subscribe(command)
 
     def get_input(self, input_id: str) -> RemoteInput[bool]|RemoteInput[float]:
         """Method to get a specific input by its ID."""
         return self.inputs[input_id]
-        
-    def __call__(self):
-        raise TypeError('Class must be accessed through `get_instance()`.')

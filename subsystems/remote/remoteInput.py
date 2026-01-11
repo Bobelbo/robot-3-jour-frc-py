@@ -1,17 +1,19 @@
-from typing import Generic, List, TypeVar
+from typing import Generic, List, TypeVar, TYPE_CHECKING
 
-from commands.commandInterface import CommandInterface
+if TYPE_CHECKING:
+    from commands.commandInterface import CommandInterface
+    
 from subsystems.subsystemInterface import SubsystemInterface
 
 # Generic type for RemoteInput
 T = TypeVar('T')
 class RemoteInput(SubsystemInterface, Generic[T]):
     """Generic class to handle remote inputs and dispatch them"""
-    _data_function: lambda: T = None
-    _state: T = None
+    _data_function: lambda: T
+    _state: T
 
-    _dirty: bool = False
-    _listeners: List[CommandInterface] = []
+    _dirty: bool
+    _listeners: List['CommandInterface']
 
     def __init__(self, data_function: lambda: T):
         """
@@ -19,8 +21,10 @@ class RemoteInput(SubsystemInterface, Generic[T]):
         """
         super().__init__()
         self.data_function = data_function
+        self._dirty = False
+        self._listeners = []
 
-    def subscribe(self, command: CommandInterface) -> None:
+    def subscribe(self, command: 'CommandInterface') -> None:
         """Method to subscribe a command to this input."""
         self._listeners.append(command)
 

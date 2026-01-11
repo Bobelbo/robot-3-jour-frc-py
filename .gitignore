@@ -1,5 +1,7 @@
 # FRC Specific ignores
 .wpilib*
+networktables.json
+simgui*
 
 
 # Byte-compiled / optimized / DLL files
