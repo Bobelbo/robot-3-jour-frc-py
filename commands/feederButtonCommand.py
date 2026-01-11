@@ -1,23 +1,13 @@
-import rev
-import wpilib
-
 from commands import CommandInterface
-
+from subsystems.canMotorSS import CANMotorSS
 
 class FeederButtonCommand(CommandInterface):
-    button: wpilib.Joystick
-    motor: rev.SparkFlex
+    _motor: CANMotorSS = None
+    _state_on: bool = False
 
-    def __init__(self, joystick, motor):
-        self.joystick = joystick
+    def __init__(self, btn_id: str, motor: CANMotorSS):
+        super().__init__(btn_id)
         self.motor = motor
 
-    def _update(self) -> None:
-        return super()._update()
-
-    def _condition(self) -> bool:
-        return super()._condition()
-
-    def _execute(self) -> None:
-        button = self.joystick.getRawButton(1)
-        self.motor.set(0.4 * button)
+    def _trigger(self, btn_v: bool) -> None:
+        self.motor.set_speed(0.4 * btn_v)

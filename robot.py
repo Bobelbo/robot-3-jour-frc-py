@@ -1,11 +1,18 @@
 import wpilib
 
 from config import config
+from commands import CommandInterface
+from subsystems.remote import RemoteControllerSS
 
 class Robot(wpilib.TimedRobot):
     def robotInit(self):
-        self.commands = config['commands']
+        self._controller = RemoteControllerSS()    
+
+        command: CommandInterface
+        for command in config['commands']: 
+            command.bind()        
+
 
     def teleopPeriodic(self):
-        for command in self.commands:
-            command.execute()
+        RemoteControllerSS().update()
+        RemoteControllerSS().execute()
