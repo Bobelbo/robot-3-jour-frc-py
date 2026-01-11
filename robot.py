@@ -8,4 +8,4 @@ class Robot(wpilib.TimedRobot):
 
     def teleopPeriodic(self):
         for command in self.commands:
-            command.execute()
+            command.trigger()

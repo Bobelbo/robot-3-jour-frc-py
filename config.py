@@ -1,20 +1,21 @@
 import wpilib
 import rev
 
-from commands import tankjoystickCommand
+from commands import *
+
 
 config = {
     'commands': [
         # Initialize your commands here
-        tankjoystickCommand(
+        TankJoystickCommand(
             wpilib.Joystick(0),
             [
-                rev.CANSparkMax(1, rev.CANSparkMax.MotorType.kBrushless),
-                rev.CANSparkMax(2, rev.CANSparkMax.MotorType.kBrushless),
+                rev.SparkMax(1, rev.SparkLowLevel.MotorType.kBrushless),
+                rev.SparkMax(2, rev.SparkLowLevel.MotorType.kBrushless),
             ],
             [
-                rev.CANSparkMax(3, rev.CANSparkMax.MotorType.kBrushless),
-                rev.CANSparkMax(4, rev.CANSparkMax.MotorType.kBrushless),
+                rev.SparkMax(3, rev.SparkLowLevel.MotorType.kBrushless),
+                rev.SparkMax(4, rev.SparkLowLevel.MotorType.kBrushless),
             ],
             ),
     ]
