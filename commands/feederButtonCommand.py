@@ -19,5 +19,5 @@ class FeederButtonCommand(CommandInterface):
     def _condition(self) -> bool:
         return self.button.getRawAxis()
 
-    def _execute(self) -> None:
+    def _trigger(self) -> None:
         self.motor.set(0.4)

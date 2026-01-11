@@ -1,7 +1,7 @@
 import wpilib
 import rev
 
-from commands import *
+from commands import TankJoystickCommand
 
 config = {
     'commands': [
