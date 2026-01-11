@@ -1,4 +1,5 @@
 class CommandInterface:
+    """Default Command Interface and behaviour"""
     def trigger(self) -> None:
         self._update()
 

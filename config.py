@@ -3,7 +3,6 @@ import rev
 
 from commands import *
 
-
 config = {
     'commands': [
         # Initialize your commands here
