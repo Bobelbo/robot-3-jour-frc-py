@@ -1,6 +1,7 @@
 from commands import CommandInterface
 from subsystems.canMotorSS import CANMotorSS
 
+
 class FeederButtonCommand(CommandInterface):
     _motor: CANMotorSS = None
     _state_on: bool = False
