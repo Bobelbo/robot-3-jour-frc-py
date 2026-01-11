@@ -11,11 +11,15 @@ config = {
             [
                 rev.SparkMax(1, rev.SparkLowLevel.MotorType.kBrushless),
                 rev.SparkMax(2, rev.SparkLowLevel.MotorType.kBrushless),
-            ],
+            ],            
             [
                 rev.SparkMax(3, rev.SparkLowLevel.MotorType.kBrushless),
                 rev.SparkMax(4, rev.SparkLowLevel.MotorType.kBrushless),
             ],
             ),
+        FeederButtonCommand(
+            wpilib.Joystick(3),
+            rev.SparkFlex(5, rev.SparkLowLevel.MotorType.kBrushless),
+            )
     ]
 }

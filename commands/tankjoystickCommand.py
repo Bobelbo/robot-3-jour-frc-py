@@ -25,7 +25,7 @@ class TankJoystickCommand(CommandInterface):
         forward_acceleration = self.joystick.getRawAxis(1)
 
         for motor in self.left_motors:
-            motor.set(forward_acceleration)
+            motor.set(-forward_acceleration)
 
         for motor in self.right_motors:
-            motor.set(-forward_acceleration)
+            motor.set(forward_acceleration)
