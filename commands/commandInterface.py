@@ -1,10 +1,10 @@
 class CommandInterface:
     """Default Command Interface and behaviour"""
-    def trigger(self) -> None:
+    def execute(self) -> None:
         self._update()
 
         if self._condition():
-            self._execute()
+            self._trigger()
 
     def _update(self) -> None:
         pass
@@ -12,5 +12,5 @@ class CommandInterface:
     def _condition(self) -> bool:
         return True
 
-    def _execute(self) -> None:
+    def _trigger(self) -> None:
         raise NotImplementedError("Execute method must be implemented by subclasses.")

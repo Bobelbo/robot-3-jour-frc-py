@@ -1,9 +1,9 @@
 from .commandInterface import CommandInterface
-from .tankjoystickCommand import TankJoystickCommand
 from .feederButtonCommand import FeederButtonCommand
+from .tankjoystickCommand import TankJoystickCommand
 
 __all__ = [
-    'CommandInterface',
-    'TankJoystickCommand',
-    'FeederButtonCommand',
+    "CommandInterface",
+    "TankJoystickCommand",
+    "FeederButtonCommand",
 ]
