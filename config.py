@@ -1,25 +1,25 @@
-import wpilib
 import rev
+import wpilib
 
 from commands import *
 
 config = {
-    'commands': [
+    "commands": [
         # Initialize your commands here
         TankJoystickCommand(
             wpilib.Joystick(0),
             [
                 rev.SparkMax(1, rev.SparkLowLevel.MotorType.kBrushless),
                 rev.SparkMax(2, rev.SparkLowLevel.MotorType.kBrushless),
-            ],            
+            ],
             [
                 rev.SparkMax(3, rev.SparkLowLevel.MotorType.kBrushless),
                 rev.SparkMax(4, rev.SparkLowLevel.MotorType.kBrushless),
             ],
-            ),
+        ),
         FeederButtonCommand(
-            wpilib.Joystick(3),
+            wpilib.Joystick(0),
             rev.SparkFlex(5, rev.SparkLowLevel.MotorType.kBrushless),
-            )
+        ),
     ]
 }

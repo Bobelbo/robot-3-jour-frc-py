@@ -1,12 +1,13 @@
-import wpilib
-import rev
-
 from typing import List
+
+import rev
+import wpilib
 
 from commands import CommandInterface
 
+
 class TankJoystickCommand(CommandInterface):
-    joystick: wpilib.Joystick = None
+    joystick: wpilib.Joystick
     left_motors: List[rev.SparkMax] = []
     right_motors: List[rev.SparkMax] = []
 
