@@ -2,6 +2,7 @@ from typing import TYPE_CHECKING, List, overload
 
 if TYPE_CHECKING:
     from subsystems.remote import RemoteControllerSS
+    from subsystems.subsystemInterface import SubsystemInterface
 
 
 class CommandInterface:
@@ -27,6 +28,10 @@ class CommandInterface:
 
         if self._condition(input, index):
             self._trigger(input, index)
+
+    def update(self):
+        """Should be overriden if subsystems need to be updated (ie if PIDs are used)"""
+        pass
 
     # ALL THE FUNCTIONS BELLOW SHOULD BE OVERWRITEN (at least trigger)
 

@@ -22,17 +22,19 @@ class TankJoystickCommand(CommandInterface):
         """Needs two axies, forward and rotation, 3rd button is optional, will be for toggling the base"""
         super().__init__(btn_id)
         self._drive = CanTankDriveSS(left_motors, right_motors)
+        self._drive.stop()
 
         self._rotation_axis = 0
         self._forward_axis = 0
         self._on = True
 
-    def _update(self, btn_v: int, index: int):
+    def update(self):
         if self._on:
             self._drive.update()
         else:
             self._drive.stop()
 
+    def _update(self, btn_v: int, index: int):
         if index == 2 and btn_v == 1:
             self._on = not self._on
 

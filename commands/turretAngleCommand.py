@@ -14,7 +14,9 @@ class TurretAngleCommand(CommandInterface):
         self._vMotor = vMotor
 
         self._hMotor.setBrakeMode(False)
+        self._hMotor.setInverted(False)
         self._vMotor.setBrakeMode(False)
+        self._hMotor.setInverted(False)
 
         self._on = False
 

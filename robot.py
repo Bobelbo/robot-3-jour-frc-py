@@ -8,11 +8,14 @@ from subsystems.remote import RemoteControllerSS
 class Robot(wpilib.TimedRobot):
     def robotInit(self):
         self._controller = RemoteControllerSS(config.get("controller"))
+        self._commands: list[CommandInterface] = config["commands"]
 
-        command: CommandInterface
-        for command in config["commands"]:
+        for command in self._commands:
             command.bind(self._controller)
 
     def teleopPeriodic(self):
         self._controller.update()
         self._controller.execute()
+        
+        for command in self._commands:
+            command.update()
