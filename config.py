@@ -66,16 +66,5 @@ config = {
             horizontal_motor=CANMotorSS(8, CANMotorType.SPARKMAX),
             vertical_motor=CANMotorSS(9, CANMotorType.SPARKMAX),
         ),
-        # TankJoystickCommand(
-        #     ["baseForwardAxis", "baseRotationAxis", "btn9"],
-        #     [
-        #         CANMotorSS(1, CANMotorType.SPARKMAX),
-        #         CANMotorSS(2, CANMotorType.SPARKMAX),
-        #     ],
-        #     [
-        #         CANMotorSS(3, CANMotorType.SPARKMAX),
-        #         CANMotorSS(4, CANMotorType.SPARKMAX),
-        #     ],
-        # ),
     ],
 }
