@@ -40,6 +40,9 @@ class CANMotorSS(SubsystemInterface):
             self.pid.update()
             self._motor.set(self.pid.getOutput())
 
+    def setInverted(self, inv: bool) -> None:
+        self._motor.setInverted(inv)
+
     def setBrakeMode(self, mode: bool) -> None:
         """
         Sets the idle mode
