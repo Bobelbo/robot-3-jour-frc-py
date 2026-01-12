@@ -1,7 +1,7 @@
 from typing import List
 
 from commands import CommandInterface
-from subsystems import CANMotorSS, Pid
+from subsystems import CANMotorSS, CanTankDriveSS
 
 TAG = "TankJoystickCommand:"
 
@@ -16,52 +16,27 @@ class TankJoystickCommand(CommandInterface):
     def __init__(
         self,
         btn_id: List[str],
-        leftMotors: List[CANMotorSS],
-        rightMotors: List[CANMotorSS],
+        left_motors: List[CANMotorSS],
+        right_motors: List[CANMotorSS],
     ):
+        """Needs two axies, forward and rotation, 3rd button is optional, will be for toggling the base"""
         super().__init__(btn_id)
-        self.left_motors = leftMotors
-        self.right_motors = rightMotors
-
-        motor: CANMotorSS
-
-        self._lpid = Pid(
-            dataGetter=self.left_motors[0].velocityGetter(),
-            kp=1,
-            ki=0.0001,
-            tolerance=5,
-            noReverse=False,
-        )
-
-        self._rpid = Pid(
-            dataGetter=self.right_motors[0].velocityGetter(),
-            kp=1,
-            ki=0.0001,
-            tolerance=5,
-            noReverse=False,
-        )
-
-        for motor in self.left_motors:
-            motor.setBrakeMode(False)
-            motor.setInverted(True)
-            motor.set_pid(self._lpid)
-        for motor in self.right_motors:
-            motor.setBrakeMode(False)
-            motor.setInverted(False)
-            motor.set_pid(self._rpid)
+        self._drive = CanTankDriveSS(left_motors, right_motors)
 
         self._rotation_axis = 0
         self._forward_axis = 0
         self._on = True
 
     def _update(self, btn_v: int, index: int):
-        for motor in self.left_motors + self.right_motors:
-            self._updateMotor(motor)
+        if self._on:
+            self._drive.update()
+        else:
+            self._drive.stop()
 
         if index == 2 and btn_v == 1:
             self._on = not self._on
 
-    def _condition(self, btn_v, index: int = 0):
+    def _condition(self, btn_v, index: int):
         return self._on
 
     def _trigger(self, btn_v: float, index: int) -> None:
@@ -80,13 +55,12 @@ class TankJoystickCommand(CommandInterface):
         rightspeed = self._forward_axis - self._rotation_axis
         leftspeed = leftspeed * 300
         rightspeed = rightspeed * 300
+
         print(f"{TAG} Base right speed: {rightspeed}")
         print(f"{TAG} Base left speed: {btn_v}")
 
-        for motor in self.left_motors:
-            motor.set_speed(leftspeed)
-        for motor in self.right_motors:
-            motor.set_speed(rightspeed)
+        self._drive.set_left_speed(leftspeed)
+        self._drive.set_right_speed(rightspeed)
 
     def _updateMotor(self, motor: CANMotorSS):
         if self._on:
