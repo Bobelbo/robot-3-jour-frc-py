@@ -5,9 +5,9 @@ from subsystems import CANMotorSS, Pid, subsystemInterface
 # if TYPE_CHECKING:
 #     from subsystems import Pid
 
-RPM_THRESHOLD = [3000, 3500]
+RPM_THRESHOLD = [5000, 6000]
 RPM_TARGET = (RPM_THRESHOLD[0] + RPM_THRESHOLD[1]) / 2
-FEED_MOTOR_STRENGTH = 0.4
+FEED_MOTOR_STRENGTH = 0.6
 
 
 class TurretShooterSS(subsystemInterface.SubsystemInterface):
@@ -20,15 +20,15 @@ class TurretShooterSS(subsystemInterface.SubsystemInterface):
 
         shootPid = Pid(
             self.shootMotor.velocityGetter(),
-            0.1,
-            0.0001,
+            0.0008,
+            0.0005,
             0,
             noReverse=True,
             tolerance=100,
         )
         self.shootMotor.set_pid(shootPid)
 
-    def _update(self, btn_v, index: int) -> None:
+    def update(self) -> None:
         self.shootMotor.update()
 
     def shoot(self) -> None:
