@@ -15,7 +15,7 @@ class ClimberCommand(CommandInterface):
     def _trigger(self, btn_v, index) -> None:
         # Up = 0 down = 1
 
-        print(f"{TAG} got index: {index}")
+        # print(f"{TAG} got index: {index}")
 
         if btn_v == 1:
             if index == 0:
@@ -26,9 +26,9 @@ class ClimberCommand(CommandInterface):
             self._motor.stop()
 
     def _goUp(self, mult: float = 1.0):
-        print(f"{TAG} Going up")
+        # print(f"{TAG} Going up")
         self._motor.set_output(-0.5 * mult)
 
     def _goDown(self, mult: float = 1.0):
-        print(f"{TAG} Going down")
+        # print(f"{TAG} Going down")
         self._motor.set_output(0.5 * mult)

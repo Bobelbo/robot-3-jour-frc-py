@@ -2,6 +2,7 @@ from .canMotorSS import CANMotorSS, CANMotorType
 from .canTankDriveSS import CanTankDriveSS
 from .digitalInput import Dio
 from .pid import Pid
+from .turretShooterSS import TurretShooterSS
 
 __all__ = [
     "CANMotorSS",
@@ -9,4 +10,5 @@ __all__ = [
     "CanTankDriveSS",
     "Pid",
     "Dio",
+    "TurretShooterSS",
 ]

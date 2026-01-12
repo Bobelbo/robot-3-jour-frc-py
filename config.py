@@ -44,7 +44,7 @@ config = {
     "commands": [
         # Initialize your commands here\
         FeederButtonCommand(
-            "btn2",
+            "btn3",
             CANMotorSS(5, CANMotorType.SPARKFLEX),
         ),
         FeederAngleCommand(
@@ -56,16 +56,16 @@ config = {
             ["btn6", "btn7"],
             CANMotorSS(7, CANMotorType.SPARKMAX),
         ),
-        # TurretShooterCommand(
-        #     button="btn1",
-        #     shootMotor=CANMotorSS(10, CANMotorType.SPARKFLEX),
-        #     feedMotor=CANMotorSS(11, CANMotorType.SPARKMAX),
-        # ),
-        # TurretAngleCommand(
-        #     ["baseForwardAxis", "baseRotationAxis", "btn9"],
-        #     hMotor=CANMotorSS(8, CANMotorType.SPARKMAX),
-        #     vMotor=CANMotorSS(9, CANMotorType.SPARKMAX),
-        # ),
+        TurretShooterCommand(
+            button="btn1",
+            shootMotor=CANMotorSS(10, CANMotorType.SPARKFLEX),
+            feedMotor=CANMotorSS(11, CANMotorType.SPARKMAX),
+        ),
+        TurretAngleCommand(
+            ["baseRotationAxis", "baseForwardAxis", "btn9"],
+            hMotor=CANMotorSS(8, CANMotorType.SPARKMAX),
+            vMotor=CANMotorSS(9, CANMotorType.SPARKMAX),
+        ),
         # TankJoystickCommand(
         #     ["baseForwardAxis", "baseRotationAxis", "btn9"],
         #     [

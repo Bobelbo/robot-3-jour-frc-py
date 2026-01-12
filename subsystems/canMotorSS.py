@@ -81,8 +81,6 @@ class CANMotorSS(SubsystemInterface):
     def set_output(self, output: float) -> None:
         """Set the raw output of the motor."""
         self._motor.set(output)
-        if output == 0:
-            self._stop = True
 
     def set_pid(self, pid: "Pid") -> None:
         self.pid = pid
