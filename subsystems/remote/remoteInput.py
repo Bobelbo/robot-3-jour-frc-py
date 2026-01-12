@@ -37,12 +37,14 @@ class RemoteInput(SubsystemInterface, Generic[T]):
         previous_state = self._state
         self._state = self._data_function()
         if self._state != previous_state:
+            print(f"Remote Input Triggered")
             self._dirty = True
         else:
             self._dirty = False
 
     def execute(self) -> None:
         if self._dirty:
+            print(f"Executing Dirty Input")
             for command, index in self._listeners:
                 command.execute(self._state, index)
 

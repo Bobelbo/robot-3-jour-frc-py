@@ -11,5 +11,8 @@ class FeederButtonCommand(CommandInterface):
         self.motor = motor
         self._state_on = False
 
+        print("FeederButtonCommand Enabled")
+
     def _trigger(self, btn_v: bool, index: int = 0) -> None:
+        print(f"FeederButtonCommand Trigger: v={btn_v} i={index}")
         self.motor.set_speed(0.4 * btn_v)
