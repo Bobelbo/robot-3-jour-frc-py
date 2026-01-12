@@ -24,14 +24,13 @@ class CANMotorSS(SubsystemInterface):
         can_id: int,
         type: CANMotorType,
         brushType: rev.SparkLowLevel.MotorType = rev.SparkLowLevel.MotorType.kBrushless,
-        pid: Pid | None = None,
     ):
         super().__init__()
         self._motor = type.value(can_id, brushType)
         self._motorConfig = rev.SparkMaxConfig()
         self._stop: bool = False
         self.encoder = self._motor.getEncoder()
-        self.pid = pid
+        self.pid: Pid | None = None
 
     def udpate(self) -> None:
         """
@@ -76,6 +75,12 @@ class CANMotorSS(SubsystemInterface):
 
     def set_pid(self, pid: Pid) -> None:
         self.pid = pid
+
+    def getEncoder(self) -> rev.SparkRelativeEncoder:
+        """
+        returns encoder reference
+        """
+        return self.encoder
 
     def stop(self) -> None:
         """Stop motor."""
