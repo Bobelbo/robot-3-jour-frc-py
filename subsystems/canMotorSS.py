@@ -1,10 +1,12 @@
 from enum import Enum
-from typing import Callable
+from typing import TYPE_CHECKING, Callable, Optional
 
 import rev
 
-from .pid import Pid
 from .subsystemInterface import SubsystemInterface
+
+if TYPE_CHECKING:
+    from .pid import Pid
 
 SPARK_TYPE = rev.SparkMax | rev.SparkFlex
 TAG = "CANMotorSS:"
@@ -31,7 +33,7 @@ class CANMotorSS(SubsystemInterface):
         self._motorConfig = rev.SparkMaxConfig()
         self._stop: bool = False
         self.encoder = self._motor.getEncoder()
-        self.pid: Pid | None = None
+        self.pid: Optional["Pid"] = None
 
     def update(self) -> None:
         """
@@ -86,7 +88,7 @@ class CANMotorSS(SubsystemInterface):
         if output == 0:
             self._stop = True
 
-    def set_pid(self, pid: Pid) -> None:
+    def set_pid(self, pid: "Pid") -> None:
         self.pid = pid
 
     def velocityGetter(self) -> Callable[[], float]:

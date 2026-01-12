@@ -1,8 +1,9 @@
-from .remoteInput import RemoteInput
 from ..subsystemInterface import SubsystemInterface
+from .remoteInput import RemoteInput
+
 
 class RemoteControllerSS(SubsystemInterface):
-    inputs: dict[str, RemoteInput[bool]|RemoteInput[float]] = {}
+    inputs: dict[str, RemoteInput[bool] | RemoteInput[float]] = {}
 
     def __init__(self, config):
         """For initialization with config"""
@@ -26,6 +27,6 @@ class RemoteControllerSS(SubsystemInterface):
         """Method to bind a command to a specific input."""
         self.inputs[input_id].subscribe(command, index)
 
-    def get_input(self, input_id: str) -> RemoteInput[bool]|RemoteInput[float]:
+    def get_input(self, input_id: str) -> RemoteInput[bool] | RemoteInput[float]:
         """Method to get a specific input by its ID."""
         return self.inputs[input_id]

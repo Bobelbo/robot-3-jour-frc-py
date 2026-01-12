@@ -1,9 +1,9 @@
 from typing import TYPE_CHECKING, Callable, Generic, List, TypeVar
 
+from subsystems.subsystemInterface import SubsystemInterface
+
 if TYPE_CHECKING:
     from commands.commandInterface import CommandInterface
-
-from subsystems.subsystemInterface import SubsystemInterface
 
 # Generic type for RemoteInput
 T = TypeVar("T")
@@ -37,14 +37,14 @@ class RemoteInput(SubsystemInterface, Generic[T]):
         previous_state = self._state
         self._state = self._data_function()
         if self._state != previous_state:
-            print(f"Remote Input Triggered")
+            print("Remote Input Triggered")
             self._dirty = True
         else:
             self._dirty = False
 
     def execute(self) -> None:
         if self._dirty:
-            print(f"Executing Dirty Input")
+            print("Executing Dirty Input")
             for command, index in self._listeners:
                 command.execute(self._state, index)
 

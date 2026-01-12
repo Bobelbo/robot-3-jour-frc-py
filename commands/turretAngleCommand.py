@@ -3,12 +3,16 @@ from subsystems import CANMotorSS
 
 
 class TurretAngleCommand(CommandInterface):
+    _max_turret_rotation = 87
+    _max_turret_angle = 10
+
     def __init__(self, btn_id: list[str], hMotor: CANMotorSS, vMotor: CANMotorSS):
         """Can have up to 3 inputs, Horizontal, Vertical axies and toggle input"""
         super().__init__(btn_id)
 
         self._hMotor = hMotor
         self._vMotor = vMotor
+
         self._hMotor.setBrakeMode(False)
         self._vMotor.setBrakeMode(False)
 
@@ -28,7 +32,7 @@ class TurretAngleCommand(CommandInterface):
             self._vMove(btn_v)
 
     def _hMove(self, command: float):
-        inputTransform: float = 0.2
+        inputTransform: float = 0.1
         command = command * inputTransform
 
         self._hMotor.set_output(command)

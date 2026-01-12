@@ -1,5 +1,5 @@
 from commands import CommandInterface
-from subsystems.canMotorSS import CANMotorSS
+from subsystems import CANMotorSS
 
 
 class FeederButtonCommand(CommandInterface):
