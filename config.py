@@ -1,7 +1,6 @@
 import wpilib
 
-from commands import FeederAngleCommand, FeederButtonCommand
-from commands.turretShooter import TurretShooterCommand
+from commands import FeederAngleCommand, FeederButtonCommand, TurretAngleCommand, TankJoystickCommand, TurretShooterCommand
 from subsystems.canMotorSS import CANMotorSS, CANMotorType
 
 # We define base wpilib instances so we do not create / destroy in each lambda call
@@ -44,16 +43,9 @@ config = {
             shootMotor=CANMotorSS(10, CANMotorType.SPARKFLEX),
             feedMotor=CANMotorSS(11, CANMotorType.SPARKMAX),
         ),
-        # TankJoystickCommand(
-        #     wpilib.Joystick(0),
-        #     [
-        #         rev.SparkMax(1, rev.SparkLowLevel.MotorType.kBrushless),
-        #         rev.SparkMax(2, rev.SparkLowLevel.MotorType.kBrushless),
-        #     ],
-        #     [
-        #         rev.SparkMax(3, rev.SparkLowLevel.MotorType.kBrushless),
-        #         rev.SparkMax(4, rev.SparkLowLevel.MotorType.kBrushless),
-        #     ],
-        #     ),
+        TankJoystickCommand(["baseForwardAxis","baseRotationAxis","btn9"],
+                            [CANMotorSS(1, CANMotorType.SPARKMAX),CANMotorSS(2, CANMotorType.SPARKMAX)],
+                            [CANMotorSS(3, CANMotorType.SPARKMAX),CANMotorSS(4, CANMotorType.SPARKMAX)]),
+        TurretAngleCommand(["baseForwardAxis","baseRotationAxis","btn9"],CANMotorSS(8, CANMotorType.SPARKMAX),CANMotorSS(9, CANMotorType.SPARKMAX)),
     ],
 }

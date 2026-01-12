@@ -6,14 +6,15 @@ class FeederAngleCommand(CommandInterface):
     _motor: CANMotorSS
 
     def __init__(self, btns, motor):
+        """Needs two buttons, one up and one down"""
         super().__init__(btns)
         self._motor = motor
 
     def _trigger(self, btn_v, btn_index) -> None:
         # Up = 0 down = 1
-        if btn_value == 1 and btn_index == 0:
+        if btn_v == 1 and btn_index == 0:
             self._motor.set(0.1 * 1)
-        elif btn_value == 1 and btn_index == 0:
+        elif btn_v == 1 and btn_index == 0:
             self._motor.set(0.1 * 1)
         else:
             self._motor.set(0)

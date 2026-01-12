@@ -28,14 +28,14 @@ class CommandInterface:
 
     # ALL THE FUNCTIONS BELLOW SHOULD BE OVERWRITEN (at least trigger)
 
-    def _update(self, btn_v) -> None:
+    def _update(self, btn_v, index: int) -> None:
         """Should be used to update command state and pre-calculate for _condition"""
         pass
 
-    def _condition(self, btn_v) -> bool:
+    def _condition(self, btn_v, index: int) -> bool:
         """Should be used as a guard clause not a condition, ie if btn6 is pressed or limit siwitchX is on do not go"""
         return True
 
-    def _trigger(self, btn_v) -> None:
+    def _trigger(self, btn_v, index: int) -> None:
         """Should be used to trigger actuators"""
         raise NotImplementedError("Execute method must be implemented by subclasses.")
