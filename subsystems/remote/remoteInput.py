@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Generic, List, TypeVar
+from typing import TYPE_CHECKING, Callable, Generic, List, TypeVar
 
 if TYPE_CHECKING:
     from commands.commandInterface import CommandInterface
@@ -12,20 +12,19 @@ T = TypeVar("T")
 class RemoteInput(SubsystemInterface, Generic[T]):
     """Generic class to handle remote inputs and dispatch them"""
 
-    _data_function: lambda: T
+    _data_function: Callable[[], T]
     _state: T
 
     _dirty: bool
-    _listeners: List[tuple["CommandInterface",int]]
+    _listeners: List[tuple["CommandInterface", int]]
 
-    def __init__(self, data_function: lambda: T):
+    def __init__(self, data_function: Callable[[], T]):
         """
         :param data_function: Function to gather the button input state
         """
         super().__init__()
-        self._data_function = None
-        self._state = None
-        self.data_function = data_function
+        self._state = data_function()
+        self._data_function = data_function
         self._dirty = False
         self._listeners = []
 
@@ -47,16 +46,16 @@ class RemoteInput(SubsystemInterface, Generic[T]):
             for command, index in self._listeners:
                 command.execute(self._state, index)
 
-    def consume(self) -> T:
-        """
-        Method to consume the current button state.
-        After calling this method, the state is reset to None, preventing further commands or modules of using the input.
-        WIP
-        """
-        current_state = self._state
-        self._state = None
-        self._dirty = False
-        return current_state
+    # def consume(self) -> T:
+    #     """
+    #     Method to consume the current button state.
+    #     After calling this method, the state is reset to None, preventing further commands or modules of using the input.
+    #     WIP
+    #     """
+    #     current_state = self._state
+    #     self._state = None
+    #     self._dirty = False
+    #     return current_state
 
     def get(self) -> T:
         """Method to get the current button state. Used by non-subscribers"""

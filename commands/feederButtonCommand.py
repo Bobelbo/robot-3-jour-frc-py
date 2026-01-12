@@ -11,5 +11,5 @@ class FeederButtonCommand(CommandInterface):
         self.motor = motor
         self._state_on = False
 
-    def _trigger(self, btn_v: bool) -> None:
+    def _trigger(self, btn_v: bool, index: int = 0) -> None:
         self.motor.set_speed(0.4 * btn_v)

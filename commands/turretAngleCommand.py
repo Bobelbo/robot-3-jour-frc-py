@@ -1,8 +1,9 @@
 from commands import CommandInterface
 from subsystems import CANMotorSS
 
+
 class TurretAngleCommand(CommandInterface):
-    def __init__(self, btn_id: str, hMotor: CANMotorSS, vMotor: CANMotorSS):
+    def __init__(self, btn_id: list[str], hMotor: CANMotorSS, vMotor: CANMotorSS):
         """Can have up to 3 inputs, Horizontal, Vertical axies and toggle input"""
         super().__init__(btn_id)
 
@@ -17,9 +18,8 @@ class TurretAngleCommand(CommandInterface):
         if index == 2 and btn_v == 1:
             self._on = not self._on
 
-    def _condition(self):
+    def _condition(self, btn_v, index):
         return self._on
-
 
     def _trigger(self, btn_v, index) -> None:
         if index == 0 and btn_v >= 0.1:
@@ -27,13 +27,11 @@ class TurretAngleCommand(CommandInterface):
         if index == 1 and btn_v >= 0.1:
             self._vMove(btn_v)
 
-
     def _hMove(self, command: float):
         inputTransform: float = 0.2
         command = command * inputTransform
 
         self._hMotor.set_output(command)
-
 
     def _vMove(self, command: float):
         inputTransform: float = 0.1

@@ -26,13 +26,13 @@ class TurretShooterCommand(CommandInterface):
         )
         self.shootMotor.set_pid(shootPid)
 
-    def _update(self, btn_v) -> None:
+    def _update(self, btn_v, index: int) -> None:
         self.shootMotor.update()
 
-    def _condition(self, btn_v) -> bool:
+    def _condition(self, btn_v, index: int) -> bool:
         return True
 
-    def _trigger(self, btn_v) -> None:
+    def _trigger(self, btn_v, index: int) -> None:
         shootCommand: bool = btn_v
 
         if shootCommand:

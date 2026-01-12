@@ -1,7 +1,6 @@
 from enum import Enum
 
 import rev
-from wpimath.controller import PIDController
 
 from .pid import Pid
 from .subsystemInterface import SubsystemInterface

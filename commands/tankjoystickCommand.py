@@ -6,11 +6,17 @@ from subsystems import CANMotorSS, Pid
 
 class TankJoystickCommand(CommandInterface):
     """Tank drive control using a joystick."""
+
     _axis_deadzone: float = 0.05
     _forward_axis: float
     _rotation_axis: float
 
-    def __init__(self, btn_id: str, leftMotors: List[CANMotorSS], rightMotors: List[CANMotorSS]):
+    def __init__(
+        self,
+        btn_id: List[str],
+        leftMotors: List[CANMotorSS],
+        rightMotors: List[CANMotorSS],
+    ):
         super().__init__(btn_id)
         self.left_motors = leftMotors
         self.right_motors = rightMotors
@@ -28,7 +34,7 @@ class TankJoystickCommand(CommandInterface):
             kp=0.1,
             ki=0.0001,
             tolerance=5,
-            noReverse=True 
+            noReverse=True,
         )
 
         self._rpid = Pid(
@@ -36,11 +42,10 @@ class TankJoystickCommand(CommandInterface):
             kp=0.1,
             ki=0.0001,
             tolerance=5,
-            noReverse=True 
+            noReverse=True,
         )
 
         self._on = True
-
 
     def _update(self, btn_v: int, index: int):
         for motor in self.left_motors + self.right_motors:
@@ -48,11 +53,9 @@ class TankJoystickCommand(CommandInterface):
 
         if index == 2 and btn_v == 1:
             self._on = not self._on
-            
 
-    def _condition(self):
+    def _condition(self, btn_v, index: int = 0):
         return self._on
-    
 
     def _trigger(self, btn_v: float, index: int) -> None:
         # if value delta is smaller than deadzone threshold, set to 0
@@ -73,10 +76,8 @@ class TankJoystickCommand(CommandInterface):
         for motor in self.right_motors:
             motor.set_speed(rightspeed)
 
-
-    
     def _updateMotor(self, motor: CANMotorSS):
-            if self._on:
-                motor.update()
-            else:
-                motor.stop()
+        if self._on:
+            motor.update()
+        else:
+            motor.stop()
