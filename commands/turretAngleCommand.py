@@ -13,11 +13,11 @@ class TurretAngleCommand(CommandInterface):
         """Can have up to 3 inputs, Horizontal, Vertical axies and toggle input"""
         super().__init__(btn_id)
 
-        self._hMotor = hMotor
-        self._vMotor = vMotor
+        self._horizontal_motor = hMotor
+        self._vertical_motor = vMotor
 
-        self._hMotor.setBrakeMode(True)
-        self._vMotor.setBrakeMode(True)
+        self._horizontal_motor.setBrakeMode(True)
+        self._vertical_motor.setBrakeMode(True)
 
         self._on = False
 
@@ -34,22 +34,22 @@ class TurretAngleCommand(CommandInterface):
         if index == 1 and abs(btn_v):
             self._vMove(btn_v)
 
-    def _hMove(self, command: float):
+    def _hMove(self, value: float):
         inputTransform: float = 0.1
-        if abs(command) < DEADZONE:
-            self._hMotor.stop()
+        if abs(value) < DEADZONE:
+            self._horizontal_motor.stop()
             return
-        command = command * inputTransform
+        value = value * inputTransform
 
-        self._hMotor.set_output(command)
+        self._horizontal_motor.set_output(value)
 
-    def _vMove(self, command: float):
+    def _vMove(self, value: float):
         inputTransform: float = 0.1
-        if abs(command) < DEADZONE:
+        if abs(value) < DEADZONE:
             # print(f"{TAG} horizontal DEADZONE reached")
-            self._vMotor.stop()
+            self._vertical_motor.stop()
             return
-        command = command * inputTransform
+        value = value * inputTransform
         # print(f"{TAG} horizontal command: {command}")
 
-        self._vMotor.set_output(command)
+        self._vertical_motor.set_output(value)
