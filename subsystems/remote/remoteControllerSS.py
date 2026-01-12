@@ -22,9 +22,9 @@ class RemoteControllerSS(SubsystemInterface):
         for input in self.inputs.values():
             input.execute()
 
-    def bind(self, input_id: str, command) -> None:
+    def bind(self, input_id: str, command, index: int) -> None:
         """Method to bind a command to a specific input."""
-        self.inputs[input_id].subscribe(command)
+        self.inputs[input_id].subscribe(command, index)
 
     def get_input(self, input_id: str) -> RemoteInput[bool]|RemoteInput[float]:
         """Method to get a specific input by its ID."""

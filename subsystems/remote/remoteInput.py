@@ -16,7 +16,7 @@ class RemoteInput(SubsystemInterface, Generic[T]):
     _state: T
 
     _dirty: bool
-    _listeners: List["CommandInterface"]
+    _listeners: List[tuple["CommandInterface",int]]
 
     def __init__(self, data_function: lambda: T):
         """
@@ -29,9 +29,9 @@ class RemoteInput(SubsystemInterface, Generic[T]):
         self._dirty = False
         self._listeners = []
 
-    def subscribe(self, command: "CommandInterface") -> None:
+    def subscribe(self, command: "CommandInterface", index: int) -> None:
         """Method to subscribe a command to this input."""
-        self._listeners.append(command)
+        self._listeners.append((command, index))
 
     def update(self) -> None:
         """Method to update the input state. Also validates the dirtiness to trigger commands correctly."""
@@ -44,8 +44,8 @@ class RemoteInput(SubsystemInterface, Generic[T]):
 
     def execute(self) -> None:
         if self._dirty:
-            for listener in self._listeners:
-                listener.execute()
+            for command, index in self._listeners:
+                command.execute(self._state, index)
 
     def consume(self) -> T:
         """

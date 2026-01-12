@@ -1,19 +1,30 @@
+from typing import List, overload
 from subsystems.remote import RemoteControllerSS
 
 class CommandInterface:
     """Default Command Interface and behaviour"""
+    @overload
+    def __init__(self, btn_id: List[str]):
+        ...
+    @overload
+    def __init__(self, btn_id: str):
+        ...
     def __init__(self, btn_id):
-        self._btn_id = btn_id
+        if type(btn_id) is str:
+            btn_id = [btn_id]
+        self._btn_ids = btn_id            
 
-    def execute(self, input) -> None:
-        self._update(input)
-
-        if self._condition(input):
-            self._trigger(input)
-    
     def bind(self, controller: 'RemoteControllerSS') -> None:
         """Should only be called once, binds itself to remote controller singleton"""
-        controller.bind(self._btn_id, self)
+        for i in range(len(self._btn_ids)):
+            controller.bind(self._btn_ids[i], self, i)
+
+    def execute(self, input, index) -> None:
+        """Buttons can have indexes for multiple buttons per command"""
+        self._update(input, index)
+
+        if self._condition(input, index):
+            self._trigger(input, index)
 
     # ALL THE FUNCTIONS BELLOW SHOULD BE OVERWRITEN (at least trigger)
 

@@ -1,5 +1,6 @@
 import wpilib
 
+from commands import FeederAngleCommand
 from commands import FeederButtonCommand
 from subsystems.canMotorSS import CANMotorSS
 
@@ -15,7 +16,6 @@ config = {
             ('baseRotationAxis',     lambda : _input_remote.getRawAxis(0)),
             ('baseSmoothingAxis',    lambda : _input_remote.getRawAxis(2)),
         },
-
         'buttons': {
             # ID : Function inside a tuple
             ('btn1',     lambda : _input_remote.getRawButton(0)),
@@ -42,6 +42,7 @@ config = {
     'commands': [
         # Initialize your commands here\
         FeederButtonCommand("btn2", CANMotorSS(5)),
+        FeederAngleCommand(["btn11", "btn10"], CANMotorSS(6)),
         
         # TankJoystickCommand(
         #     wpilib.Joystick(0),
