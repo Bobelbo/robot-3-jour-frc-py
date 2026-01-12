@@ -10,8 +10,6 @@ class TankJoystickCommand(CommandInterface):
     """Tank drive control using a joystick."""
 
     _axis_deadzone: float = 0.05
-    _forward_axis: float
-    _rotation_axis: float
 
     def __init__(
         self,
@@ -24,8 +22,8 @@ class TankJoystickCommand(CommandInterface):
         self._drive = CanTankDriveSS(left_motors, right_motors)
         self._drive.stop()
 
-        self._rotation_axis = 0
-        self._forward_axis = 0
+        self._rotation_axis = 0.0 # We put 0.0 to specify it is a float, this allows intellisense to kick in
+        self._forward_axis = 0.0
         self._on = True
 
     def update(self):

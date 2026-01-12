@@ -3,7 +3,7 @@ from wpilib import DigitalInput
 from .subsystemInterface import SubsystemInterface
 
 
-class Dio(SubsystemInterface):
+class DigitalIO(SubsystemInterface):
     def __init__(self, port: int):
         self._port = float
         self._dio = DigitalInput(port)

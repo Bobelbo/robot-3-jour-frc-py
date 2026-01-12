@@ -48,17 +48,6 @@ class RemoteInput(SubsystemInterface, Generic[T]):
             for command, index in self._listeners:
                 command.execute(self._state, index)
 
-    # def consume(self) -> T:
-    #     """
-    #     Method to consume the current button state.
-    #     After calling this method, the state is reset to None, preventing further commands or modules of using the input.
-    #     WIP
-    #     """
-    #     current_state = self._state
-    #     self._state = None
-    #     self._dirty = False
-    #     return current_state
-
     def get(self) -> T:
         """Method to get the current button state. Used by non-subscribers"""
         return self._state

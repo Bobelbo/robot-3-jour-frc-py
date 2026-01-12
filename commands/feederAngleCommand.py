@@ -1,5 +1,5 @@
 from commands import CommandInterface
-from subsystems import CANMotorSS, Dio
+from subsystems import CANMotorSS, DigitalIO
 
 TAG = "FEEDER ANGLE:"
 
@@ -7,13 +7,13 @@ TAG = "FEEDER ANGLE:"
 class FeederAngleCommand(CommandInterface):
     _motor: CANMotorSS
 
-    def __init__(self, btns: list[str], motor: CANMotorSS, dio: Dio):
+    def __init__(self, btns: list[str], motor: CANMotorSS, deployed_limit_switch: DigitalIO):
         """Needs two buttons, one up and one down"""
         super().__init__(btns)
         self._motor = motor
         self._ref = 0
         self._isHomed: bool = False
-        self._switch = dio
+        self._switch = deployed_limit_switch
         print(f"{TAG} Initialized")
 
     def _update(self, btn_v, index: int) -> None:
