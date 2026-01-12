@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING
 
 from commands import CommandInterface
-from subsystems import CANMotorSS, Pid, TurretShooterSS
+from subsystems import CANMotorSS, TurretShooterSS
 
 # if TYPE_CHECKING:
 #     from subsystems import Pid
