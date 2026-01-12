@@ -9,7 +9,6 @@ class FeederButtonCommand(CommandInterface):
     def __init__(self, btn_id: str, motor: CANMotorSS):
         super().__init__(btn_id)
         self.motor = motor
-        self._state_on = False
 
         print("FeederButtonCommand Enabled")
 

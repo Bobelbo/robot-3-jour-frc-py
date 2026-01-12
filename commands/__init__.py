@@ -4,6 +4,7 @@ from .feederButtonCommand import FeederButtonCommand
 from .tankjoystickCommand import TankJoystickCommand
 from .turretAngleCommand import TurretAngleCommand
 from .turretShooterCommand import TurretShooterCommand
+from .zclimberCommand import ClimberCommand
 
 __all__ = [
     "CommandInterface",
@@ -12,4 +13,5 @@ __all__ = [
     "FeederAngleCommand",
     "TurretAngleCommand",
     "TurretShooterCommand",
+    "ClimberCommand",
 ]

@@ -3,6 +3,8 @@ from typing import List
 from commands import CommandInterface
 from subsystems import CANMotorSS, Pid
 
+TAG = "TankJoystickCommand:"
+
 
 class TankJoystickCommand(CommandInterface):
     """Tank drive control using a joystick."""
@@ -22,29 +24,34 @@ class TankJoystickCommand(CommandInterface):
         self.right_motors = rightMotors
 
         motor: CANMotorSS
-        for motor in self.left_motors:
-            motor.setBrakeMode(False)
-            motor.setInverted(True)
-        for motor in self.right_motors:
-            motor.setBrakeMode(False)
-            motor.setInverted(False)
 
         self._lpid = Pid(
-            dataGetter=self.left_motors[0].getEncoder().getVelocity,
-            kp=0.1,
+            dataGetter=self.left_motors[0].velocityGetter(),
+            kp=1,
             ki=0.0001,
             tolerance=5,
-            noReverse=True,
+            noReverse=False,
         )
 
         self._rpid = Pid(
-            dataGetter=self.right_motors[0].getEncoder().getVelocity,
-            kp=0.1,
+            dataGetter=self.right_motors[0].velocityGetter(),
+            kp=1,
             ki=0.0001,
             tolerance=5,
-            noReverse=True,
+            noReverse=False,
         )
 
+        for motor in self.left_motors:
+            motor.setBrakeMode(False)
+            motor.setInverted(True)
+            motor.set_pid(self._lpid)
+        for motor in self.right_motors:
+            motor.setBrakeMode(False)
+            motor.setInverted(False)
+            motor.set_pid(self._rpid)
+
+        self._rotation_axis = 0
+        self._forward_axis = 0
         self._on = True
 
     def _update(self, btn_v: int, index: int):
@@ -59,6 +66,7 @@ class TankJoystickCommand(CommandInterface):
 
     def _trigger(self, btn_v: float, index: int) -> None:
         # if value delta is smaller than deadzone threshold, set to 0
+
         if index == 0 and abs(btn_v) < self._axis_deadzone:
             self._forward_axis = 0
         elif index == 0:
@@ -70,6 +78,10 @@ class TankJoystickCommand(CommandInterface):
 
         leftspeed = self._forward_axis + self._rotation_axis
         rightspeed = self._forward_axis - self._rotation_axis
+        leftspeed = leftspeed * 300
+        rightspeed = rightspeed * 300
+        print(f"{TAG} Base right speed: {rightspeed}")
+        print(f"{TAG} Base left speed: {btn_v}")
 
         for motor in self.left_motors:
             motor.set_speed(leftspeed)

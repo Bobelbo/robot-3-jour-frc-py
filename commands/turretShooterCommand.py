@@ -17,7 +17,7 @@ class TurretShooterCommand(CommandInterface):
         self.shootMotor.setBrakeMode(False)
 
         shootPid = Pid(
-            self.shootMotor.getEncoder().getVelocity,
+            self.shootMotor.velocityGetter(),
             0.1,
             0.0001,
             0,
@@ -43,7 +43,7 @@ class TurretShooterCommand(CommandInterface):
             self.feedMotor.stop()
 
     def _shoot(self) -> None:
-        rpm = self.shootMotor.getEncoder().getVelocity()
+        rpm = self.shootMotor.velocityGetter()()
 
         if (rpm > RPM_THRESHOLD[0]) and (rpm < RPM_THRESHOLD[1]):
             self.feedMotor.set_output(FEED_MOTOR_STRENGTH)

@@ -1,4 +1,5 @@
 from enum import Enum
+from typing import Callable
 
 import rev
 
@@ -6,6 +7,7 @@ from .pid import Pid
 from .subsystemInterface import SubsystemInterface
 
 SPARK_TYPE = rev.SparkMax | rev.SparkFlex
+TAG = "CANMotorSS:"
 
 
 class CANMotorType(Enum):
@@ -31,7 +33,7 @@ class CANMotorSS(SubsystemInterface):
         self.encoder = self._motor.getEncoder()
         self.pid: Pid | None = None
 
-    def udpate(self) -> None:
+    def update(self) -> None:
         """
         Updates the motor output if it is not stopped and a pid is set
         """
@@ -40,7 +42,8 @@ class CANMotorSS(SubsystemInterface):
             self._motor.set(self.pid.getOutput())
 
     def setInverted(self, inv: bool) -> None:
-        self._motor.setInverted(inv)
+        self._motorConfig.inverted(inv)
+        self._configure()
 
     def setBrakeMode(self, mode: bool) -> None:
         """
@@ -65,10 +68,17 @@ class CANMotorSS(SubsystemInterface):
 
     def set_speed(self, speed: float) -> None:
         """Sets the speed of the motor. IF the pid Has been set"""
+
+        if speed == 0:
+            self.stop()
+            return
+
         if self.pid is not None:
             self._stop = False
             self.pid.setTarget(speed)
             self._motor.set(self.pid.getOutput())
+        else:
+            print(f"{TAG} Cannot set speed, no pid")
 
     def set_output(self, output: float) -> None:
         """Set the raw output of the motor."""
@@ -79,11 +89,23 @@ class CANMotorSS(SubsystemInterface):
     def set_pid(self, pid: Pid) -> None:
         self.pid = pid
 
-    def getEncoder(self) -> rev.SparkRelativeEncoder:
+    def velocityGetter(self) -> Callable[[], float]:
         """
-        returns encoder reference
+        returns encoder velocity getter reference
         """
-        return self.encoder
+        return self.encoder.getVelocity
+
+    def positionGetter(self) -> Callable[[], float]:
+        """
+        returns encoder position getter reference
+        """
+        return self.encoder.getPosition
+
+    def resetEncoder(self) -> None:
+        """
+        resets the motor's encoder
+        """
+        self.encoder.setPosition(0.0)
 
     def stop(self) -> None:
         """Stop motor."""

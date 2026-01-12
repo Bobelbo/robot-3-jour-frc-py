@@ -1,13 +1,14 @@
 import wpilib
 
 from commands import (
+    ClimberCommand,
     FeederAngleCommand,
     FeederButtonCommand,
     TankJoystickCommand,
     TurretAngleCommand,
     TurretShooterCommand,
 )
-from subsystems.canMotorSS import CANMotorSS, CANMotorType
+from subsystems import CANMotorSS, CANMotorType, Dio
 
 # We define base wpilib instances so we do not create / destroy in each lambda call
 _input_remote = wpilib.Joystick(0)
@@ -42,8 +43,19 @@ config = {
     # A command only has one input trigger
     "commands": [
         # Initialize your commands here\
-        FeederButtonCommand("btn2", CANMotorSS(5, CANMotorType.SPARKFLEX)),
-        FeederAngleCommand(["btn11", "btn10"], CANMotorSS(6, CANMotorType.SPARKMAX)),
+        FeederButtonCommand(
+            "btn2",
+            CANMotorSS(5, CANMotorType.SPARKFLEX),
+        ),
+        FeederAngleCommand(
+            ["btn11", "btn10"],
+            CANMotorSS(6, CANMotorType.SPARKMAX),
+            Dio(0),
+        ),
+        ClimberCommand(
+            ["btn6", "btn7"],
+            CANMotorSS(7, CANMotorType.SPARKMAX),
+        ),
         # TurretShooterCommand(
         #     button="btn1",
         #     shootMotor=CANMotorSS(10, CANMotorType.SPARKFLEX),
