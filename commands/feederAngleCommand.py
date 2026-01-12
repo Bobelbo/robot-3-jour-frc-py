@@ -3,13 +3,13 @@ from subsystems.canMotorSS import CANMotorSS
 
 
 class FeederAngleCommand(CommandInterface):
-    _motor: CANMotorSS = None
+    _motor: CANMotorSS
 
     def __init__(self, btns, motor):
         super().__init__(btns)
         self._motor = motor
 
-    def _trigger(self, btn_value, btn_index) -> None:
+    def _trigger(self, btn_v, btn_index) -> None:
         # Up = 0 down = 1
         if btn_value == 1 and btn_index == 0:
             self._motor.set(0.1 * 1)
@@ -42,6 +42,6 @@ class FeederAngleCommand(CommandInterface):
 #     def _trigger(self, btn_v: float, index: int) -> None:
 #         if index == 0:
 #             self._btn0Trigger(btn_v)
-    
+
 #     def _btn0Trigger(self, value):
-#         self._motor.set(0.1 * value)     
+#         self._motor.set(0.1 * value)
