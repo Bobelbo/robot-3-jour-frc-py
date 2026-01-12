@@ -1,70 +1,51 @@
-import rev
-import wpilib
-from wpimath.controller import PIDController
-
 from commands import CommandInterface
+from subsystems.canMotorSS import CANMotorSS
+from subsystems.pid import Pid
 
 RPM_THRESHOLD = [3000, 3500]
 RPM_TARGET = (RPM_THRESHOLD[0] + RPM_THRESHOLD[1]) / 2
-SPARK_TYPE = rev.SparkMax | rev.SparkFlex
 FEED_MOTOR_STRENGTH = 0.4
 
 
-class TurretShooter(CommandInterface):
-    def __init__(
-        self, joystick: wpilib.Joystick, feedMotor: SPARK_TYPE, shootMotor: SPARK_TYPE
-    ):
-        self.joystick = joystick
+class TurretShooterCommand(CommandInterface):
+    def __init__(self, button: str, feedMotor: CANMotorSS, shootMotor: CANMotorSS):
+        super().__init__(button)
         self.feedMotor = feedMotor
-        feedMotorConfig = rev.SparkMaxConfig()
-        feedMotorConfig.setIdleMode(rev.SparkBaseConfig.IdleMode.kBrake)
-        self.feedMotor.configure(
-            feedMotorConfig,
-            rev.ResetMode.kResetSafeParameters,
-            rev.PersistMode.kPersistParameters,
-        )
+        self.feedMotor.setBrakeMode(True)
+
         self.shootMotor = shootMotor
-        shootMotorConfig = rev.SparkMaxConfig()
-        shootMotorConfig.setIdleMode(rev.SparkBaseConfig.IdleMode.kCoast)
-        self.shootMotor.configure(
-            shootMotorConfig,
-            rev.ResetMode.kResetSafeParameters,
-            rev.PersistMode.kPersistParameters,
+        self.shootMotor.setBrakeMode(False)
+
+        shootPid = Pid(
+            self.shootMotor.getEncoder().getVelocity,
+            0.1,
+            0.0001,
+            0,
+            noReverse=True,
+            tolerance=100,
         )
-        self.encoder = self.shootMotor.getEncoder()
-        self.rpm: float = 0
-        self.kP: float = 0.1
-        self.kI: float = 0.001
-        self.kD: float = 0.0
-        self.pid = PIDController(self.kP, self.kI, self.kD)
-        self.pid.setTolerance(100.0)
+        self.shootMotor.set_pid(shootPid)
 
-    def _update(self) -> None:
-        self.rpm = self.encoder.getVelocity()
+    def _update(self, btn_v) -> None:
+        self.shootMotor.update()
 
-    def _condition(self) -> bool:
+    def _condition(self, btn_v) -> bool:
         return True
 
-    def _trigger(self) -> None:
-        shootCommand: bool = self.joystick.getRawButton(0)
+    def _trigger(self, btn_v) -> None:
+        shootCommand: bool = btn_v
 
-        self._spinUp(shootCommand)
+        if shootCommand:
+            self.shootMotor.set_speed(RPM_TARGET)
+            self._shoot()
+        else:
+            self.shootMotor.stop()
+            self.feedMotor.stop()
 
-        self._shoot(self._isSpunUp())
+    def _shoot(self) -> None:
+        rpm = self.shootMotor.getEncoder().getVelocity()
 
-    def _spinUp(self, hasToSpinUp: bool) -> None:
-        pidOutput = self.pid.calculate(self.rpm, RPM_TARGET)
-
-        # bang bang principle so the shooter just coasts down in speed instead of trying to brake himself
-        output = pidOutput if pidOutput > 0 else 0
-
-        self.shootMotor.set(output * hasToSpinUp)
-
-    def _isSpunUp(self) -> bool:
-        if (self.rpm > RPM_THRESHOLD[0]) and (self.rpm < RPM_THRESHOLD[1]):
-            return True
-
-        return False
-
-    def _shoot(self, hasToShoot: bool) -> None:
-        self.feedMotor.set(FEED_MOTOR_STRENGTH * hasToShoot)
+        if (rpm > RPM_THRESHOLD[0]) and (rpm < RPM_THRESHOLD[1]):
+            self.feedMotor.set_output(FEED_MOTOR_STRENGTH)
+        else:
+            self.feedMotor.stop()

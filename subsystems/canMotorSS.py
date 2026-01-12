@@ -37,6 +37,7 @@ class CANMotorSS(SubsystemInterface):
         Updates the motor output if it is not stopped and a pid is set
         """
         if not self._stop and self.pid is not None:
+            self.pid.update()
             self._motor.set(self.pid.getOutput())
 
     def setBrakeMode(self, mode: bool) -> None:
