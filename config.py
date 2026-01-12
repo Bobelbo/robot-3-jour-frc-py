@@ -63,8 +63,8 @@ config = {
         # ),
         # TurretAngleCommand(
         #     ["baseForwardAxis", "baseRotationAxis", "btn9"],
-        #     CANMotorSS(8, CANMotorType.SPARKMAX),
-        #     CANMotorSS(9, CANMotorType.SPARKMAX),
+        #     hMotor=CANMotorSS(8, CANMotorType.SPARKMAX),
+        #     vMotor=CANMotorSS(9, CANMotorType.SPARKMAX),
         # ),
         # TankJoystickCommand(
         #     ["baseForwardAxis", "baseRotationAxis", "btn9"],

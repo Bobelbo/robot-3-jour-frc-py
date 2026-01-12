@@ -69,10 +69,6 @@ class CANMotorSS(SubsystemInterface):
     def set_speed(self, speed: float) -> None:
         """Sets the speed of the motor. IF the pid Has been set"""
 
-        if speed == 0:
-            self.stop()
-            return
-
         if self.pid is not None:
             self._stop = False
             self.pid.setTarget(speed)
