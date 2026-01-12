@@ -12,9 +12,9 @@ class FeederAngleCommand(CommandInterface):
 
     def _trigger(self, btn_v, index: int = 0) -> None:
         # Up = 0 down = 1
-        if btn_v == 1 and index == 0:
-            self._motor.set_output(0.1 * 1)
+        if btn_v == 1 and index == 1:
+            self._motor.set_output(0.1)
         elif btn_v == 1 and index == 0:
-            self._motor.set_output(0.1 * 1)
+            self._motor.set_output(-0.1)
         else:
-            self._motor.set_output(0)
+            self._motor.stop()

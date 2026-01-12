@@ -43,7 +43,7 @@ config = {
     "commands": [
         # Initialize your commands here\
         FeederButtonCommand("btn2", CANMotorSS(5, CANMotorType.SPARKFLEX)),
-        # FeederAngleCommand(["btn11", "btn10"], CANMotorSS(6, CANMotorType.SPARKMAX)),
+        FeederAngleCommand(["btn11", "btn10"], CANMotorSS(6, CANMotorType.SPARKMAX)),
         # TurretShooterCommand(
         #     button="btn1",
         #     shootMotor=CANMotorSS(10, CANMotorType.SPARKFLEX),
