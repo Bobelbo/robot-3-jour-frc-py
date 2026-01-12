@@ -9,12 +9,12 @@ class TurretAngleCommand(CommandInterface):
     _max_turret_rotation = 87
     _max_turret_angle = 10
 
-    def __init__(self, btn_id: list[str], hMotor: CANMotorSS, vMotor: CANMotorSS):
+    def __init__(self, btn_id: list[str], horizontal_motor: CANMotorSS, vertical_motor: CANMotorSS):
         """Can have up to 3 inputs, Horizontal, Vertical axies and toggle input"""
         super().__init__(btn_id)
 
-        self._horizontal_motor = hMotor
-        self._vertical_motor = vMotor
+        self._horizontal_motor = horizontal_motor
+        self._vertical_motor = vertical_motor
 
         self._horizontal_motor.setBrakeMode(True)
         self._vertical_motor.setBrakeMode(True)
