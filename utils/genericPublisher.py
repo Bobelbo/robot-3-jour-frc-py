@@ -1,14 +1,13 @@
-from typing import Generic, TypeVar, Union
+from typing import Any, Union
 
-from ntcore import DoublePublisher, StringPublisher, BooleanPublisher, IntegerPublisher
+from ntcore import BooleanPublisher, DoublePublisher, IntegerPublisher, StringPublisher
 
 GPublisher = Union[DoublePublisher, StringPublisher, BooleanPublisher, IntegerPublisher]
 
-T = TypeVar("T")
 
-class GenericPublisher(Generic[T]):
+class GenericPublisher:
     def __init__(self, publisher: GPublisher):
         self._publisher = publisher
-    
-    def set(self, value: T, time: int = 0) -> T:
+
+    def set(self, value: Any, time: int = 0):
         self._publisher.set(value)

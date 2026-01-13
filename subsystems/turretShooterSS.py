@@ -6,35 +6,42 @@ FEED_MOTOR_STRENGTH = 0.6
 
 
 class TurretShooterSS(subsystemInterface.SubsystemInterface):
-    def __init__(self, feedMotor: CANMotorSS, shootMotor: CANMotorSS):
-        self.feedMotor = feedMotor
-        self.feedMotor.setBrakeMode(True)
+    def __init__(self, feedMotors: list[CANMotorSS], shootMotor: CANMotorSS):
+        self._feedMotors = feedMotors
+        for motor in self._feedMotors:
+            motor.setBrakeMode(True)
 
-        self.shootMotor = shootMotor
-        self.shootMotor.setBrakeMode(False)
+        self._shootMotor = shootMotor
+        self._shootMotor.setBrakeMode(False)
 
         shootPid = Pid(
-            self.shootMotor.velocityGetter(),
+            self._shootMotor.velocityGetter(),
             0.0008,
             0.0005,
             0,
             noReverse=True,
             tolerance=100,
         )
-        self.shootMotor.set_pid(shootPid)
+        self._shootMotor.set_pid(shootPid)
 
     def update(self) -> None:
-        self.shootMotor.update()
+        self._shootMotor.update()
 
     def shoot(self) -> None:
-        self.shootMotor.set_target(RPM_TARGET)
-        rpm = self.shootMotor.velocityGetter()()
+        self._shootMotor.set_target(RPM_TARGET)
+        rpm = self._shootMotor.velocityGetter()()
 
         if (rpm > RPM_THRESHOLD[0]) and (rpm < RPM_THRESHOLD[1]):
-            self.feedMotor.set_output(FEED_MOTOR_STRENGTH)
+            for motor in self._feedMotors:
+                motor.set_output(FEED_MOTOR_STRENGTH)
         else:
-            self.feedMotor.stop()
+            for motor in self._feedMotors:
+                motor.stop()
 
     def stop(self) -> None:
-        self.feedMotor.stop()
-        self.shootMotor.stop()
+        for motor in self._feedMotors:
+            motor.stop()
+        self._shootMotor.stop()
+
+    def getShootSpeed(self) -> float:
+        return self._shootMotor.velocityGetter()()

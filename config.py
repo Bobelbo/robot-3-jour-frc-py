@@ -4,7 +4,7 @@ from commands import (
     ClimberCommand,
     FeederAngleCommand,
     FeederButtonCommand,
-    TankJoystickCommand,
+    # TankJoystickCommand,
     TurretAngleCommand,
     TurretShooterCommand,
 )
@@ -22,7 +22,7 @@ The Input functions key are used as labels to link input events
 The Commands should be instanciated in the config variable.
 Each command should be created using the constructor defined in the class.
 A command can take either a single input label or an array of input labels.
-A command can necessitate motors or digital inputs, in either cases they should be 
+A command can necessitate motors or digital inputs, in either cases they should be
 instanciated and populated with the correct CAN id and minimal configuration.
 
 We want the config to remain as simple and efficient as possible so we can create and edit I/Os on the fly
@@ -75,7 +75,10 @@ config = {
         TurretShooterCommand(
             "btn1",
             shootMotor=CANMotorSS(10, CANMotorType.SPARKFLEX),
-            feedMotor=CANMotorSS(11, CANMotorType.SPARKMAX),
+            feedMotors=[
+                CANMotorSS(11, CANMotorType.SPARKMAX),
+                CANMotorSS(12, CANMotorType.SPARKMAX),
+            ],
         ),
         TurretAngleCommand(
             ["baseRotationAxis", "baseForwardAxis", "btn9"],
