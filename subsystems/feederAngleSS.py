@@ -17,7 +17,7 @@ class FeederAngleSS(SubsystemInterface):
         self._motor.setBrakeMode(True)
         self._motor.set_pid(
             Pid(
-                self._motor.get_position(),
+                self._motor.positionFunctionGetter(),
                 kp=0.0001,
                 ki=0.0000001,
                 kd=0,

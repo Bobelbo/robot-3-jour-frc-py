@@ -15,7 +15,7 @@ class TurretShooterSS(subsystemInterface.SubsystemInterface):
         self._shootMotor.setBrakeMode(False)
 
         shootPid = Pid(
-            self._shootMotor.get_velocity(),
+            self._shootMotor.velocityFunctionGetter(),
             0.0008,
             0.0005,
             0,
@@ -29,7 +29,7 @@ class TurretShooterSS(subsystemInterface.SubsystemInterface):
 
     def shoot(self) -> None:
         self._shootMotor.set_target(RPM_TARGET)
-        rpm = self._shootMotor.get_velocity()()
+        rpm = self._shootMotor.velocityFunctionGetter()()
 
         if (rpm > RPM_THRESHOLD[0]) and (rpm < RPM_THRESHOLD[1]):
             for motor in self._feedMotors:
@@ -44,4 +44,4 @@ class TurretShooterSS(subsystemInterface.SubsystemInterface):
         self._shootMotor.stop()
 
     def getShootSpeed(self) -> float:
-        return self._shootMotor.get_velocity()()
+        return self._shootMotor.velocityFunctionGetter()()
