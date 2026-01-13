@@ -28,9 +28,6 @@ class TurretAngleCommand(CommandInterface):
         if index == 2 and btn_v == 1:
             self._on = not self._on
 
-        if self._vertical_switch:
-            print("TurretSwithc Pressed")
-
     def _condition(self, btn_v, index):
         return self._on
 
