@@ -22,33 +22,24 @@ class VerticalTurretAngleSS(SubsystemInterface):
         self._zero: Optional[float] = None
 
     def update(self):
-        if self._holding:
-            self._motor.update()
-
         if self._switch.isTriggered():
             self._motor.stop()
-            self._zero = self._motor.encoder.getPosition()
 
         if self._switch.isTriggered() and self._zero is None:
             self._motor.resetEncoder()
 
     def home(self):
-        self._holding = False
-        self._motor.set_output(0.1)
-
-    def down(self):
-        assert self._zero
-        self._holding = False
-        self._motor.set_target(self._zero)
+        self._motor.set_output(-0.1)
 
     def isHomed(self):
         return self._zero is not None
 
-    def up(self):
-        self._holding = False
-        self._motor.set_output(0.12)
+    def move(self, value: float):
+        if value > 0 and self._motor.get_position() < MAX_POSITION:
+            self._motor.set_output(value)
 
-    def hold(self):
-        self._holding = True
+        elif value < 0 and not self._switch.isTriggered():
+            self._motor.set_output(value)
+
+    def stop(self):
         self._motor.stop()
-        self._motor.set_target(self._motor.encoder.getPosition())

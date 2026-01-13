@@ -16,13 +16,13 @@ class TurretAngleCommand(CommandInterface):
 
         self._horizontal_motor = horizontal_motor
         self._vertical_drive = VerticalTurretAngleSS(vertical_motor, vertical_switch)
-        self._vertical_motor = vertical_motor
-
-        self._vertical_switch = vertical_switch
 
         self._horizontal_motor.setBrakeMode(True)
 
         self._on = False
+
+    def update(self):
+        self._vertical_drive.update()
 
     def _update(self, btn_v, index):
         if index == 2 and btn_v == 1:
@@ -36,11 +36,11 @@ class TurretAngleCommand(CommandInterface):
 
     def _trigger(self, btn_v, index) -> None:
         if index == 0 and abs(btn_v):
-            self._hMove(btn_v)
+            self._horizontal_move(btn_v)
         if index == 1 and abs(btn_v):
             self._vertical_move(btn_v)
 
-    def _hMove(self, value: float):
+    def _horizontal_move(self, value: float):
         inputTransform: float = 0.1
         if abs(value) < DEADZONE:
             self._horizontal_motor.stop()
@@ -53,9 +53,8 @@ class TurretAngleCommand(CommandInterface):
         inputTransform: float = 0.1
         if abs(value) < DEADZONE:
             # print(f"{TAG} horizontal DEADZONE reached")
-            self._vertical_motor.stop()
+            self._vertical_drive.stop()
             return
-        value = value * inputTransform
         # print(f"{TAG} horizontal command: {command}")
 
-        self._vertical_motor.set_output(value)
+        self._vertical_drive.move(value)
