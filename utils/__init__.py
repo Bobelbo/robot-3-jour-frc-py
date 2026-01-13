@@ -1,7 +1,7 @@
-from .logger import Logger, PublisherInterface, PublisherType
+from .logger import Logger
+from .genericPublisher import GenericPublisher
 
 __all__ = [
     "Logger",
-    "PublisherInterface",
-    "PublisherType",
+    "GenericPublisher"
 ]

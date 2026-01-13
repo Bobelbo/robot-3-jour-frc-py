@@ -2,7 +2,7 @@ from time import time
 
 from commands import CommandInterface
 from subsystems import CANMotorSS, TurretShooterSS
-from utils.logger import Logger, PublisherInterface, PublisherType
+from utils import Logger, GenericPublisher
 
 RPM_THRESHOLD = [3000, 3500]
 RPM_TARGET = (RPM_THRESHOLD[0] + RPM_THRESHOLD[1]) / 2
@@ -15,8 +15,8 @@ class TurretShooterCommand(CommandInterface):
         super().__init__(button)
         self._turretSS: TurretShooterSS = TurretShooterSS(feedMotor, shootMotor)
         self._shootCommand = 0
-        self._speedPublisher: PublisherInterface = Logger.getPublisher(
-            "turret shooting speed", PublisherType.Number
+        self._speedPublisher: GenericPublisher = Logger.getPublisher(
+            "turret shooting speed", 0.0
         )
         self._lastPublish = time()
 

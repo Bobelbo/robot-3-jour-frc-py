@@ -2,20 +2,9 @@
 Network Tables interface
 """
 
-from enum import Enum
+from ntcore import NetworkTableInstance
 
-from ntcore import DoublePublisher, NetworkTableInstance, Publisher, StringPublisher
-
-
-class PublisherType(Enum):
-    Number = DoublePublisher
-    String = StringPublisher
-
-
-class PublisherInterface:
-    def set(self, value, time):
-        pass
-
+from utils.genericPublisher import GenericPublisher
 
 class _Logger:
     def __init__(self):
@@ -30,13 +19,8 @@ class _Logger:
         # You must specify a default value when creating a subscriber
         # This default value is returned if the topic hasn't been published yet
 
-    def getPublisher(self, name: str, type: PublisherType) -> PublisherInterface:
-        match type:
-            case PublisherType.Number:
-                publisher = self._smartDashboard.getDoubleTopic(name).publish()
-            case PublisherType.String:
-                publisher = self._smartDashboard.getStringTopic(name).publish()
-
+    def getPublisher(self, name: str, var_type: type) -> GenericPublisher:
+        publisher = self._smartDashboard.getStringTopic(name).publish()
         return publisher
 
 
