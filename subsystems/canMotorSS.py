@@ -85,13 +85,13 @@ class CANMotorSS(SubsystemInterface):
     def set_pid(self, pid: "Pid") -> None:
         self.pid = pid
 
-    def velocityGetter(self) -> Callable[[], float]:
+    def get_velocity(self) -> Callable[[], float]:
         """
         returns encoder velocity getter reference
         """
         return self.encoder.getVelocity
 
-    def positionGetter(self) -> Callable[[], float]:
+    def get_position(self) -> Callable[[], float]:
         """
         returns encoder position getter reference
         """

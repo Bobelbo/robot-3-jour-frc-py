@@ -7,26 +7,19 @@ from .subsystemInterface import SubsystemInterface
 if TYPE_CHECKING:
     from subsystems import CANMotorSS, DigitalIO
 
+MAX_POSITION = 100
 
-class FeederAngleSS(SubsystemInterface):
+class VerticalTurretAngleSS(SubsystemInterface):
+
     def __init__(self, motor: "CANMotorSS", switch: "DigitalIO"):
         self._motor = motor
         self._switch = switch
 
         self._motor.setInverted(False)
         self._motor.setBrakeMode(True)
-        self._motor.set_pid(
-            Pid(
-                self._motor.get_position(),
-                kp=0.0001,
-                ki=0.0000001,
-                kd=0,
-            )
-        )
 
         # Used to find deployed solution encoder state
         self._zero: Optional[float] = None
-        self._holding = False
 
     def update(self):
         if self._holding:

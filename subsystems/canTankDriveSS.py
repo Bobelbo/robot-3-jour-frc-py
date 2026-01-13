@@ -16,7 +16,7 @@ class CanTankDriveSS(SubsystemInterface):
         self.right_motors = right_motors
 
         self._lpid = Pid(
-            dataGetter=self.left_motors[0].velocityGetter(),
+            dataGetter=self.left_motors[0].get_velocity(),
             kp=0.01,
             ki=0.0001,
             tolerance=5,
@@ -24,7 +24,7 @@ class CanTankDriveSS(SubsystemInterface):
         )
 
         self._rpid = Pid(
-            dataGetter=self.right_motors[0].velocityGetter(),
+            dataGetter=self.right_motors[0].get_velocity(),
             kp=0.01,
             ki=0.0001,
             tolerance=5,

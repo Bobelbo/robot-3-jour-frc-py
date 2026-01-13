@@ -84,6 +84,7 @@ config = {
             ["baseRotationAxis", "baseForwardAxis", "btn9"],
             horizontal_motor=CANMotorSS(8, CANMotorType.SPARKMAX),
             vertical_motor=CANMotorSS(9, CANMotorType.SPARKMAX),
+            vertical_switch=DigitalIO(1),
         ),
     ],
 }
