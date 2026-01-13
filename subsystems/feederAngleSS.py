@@ -33,12 +33,16 @@ class FeederAngleSS(SubsystemInterface):
             self._motor.stop()
             self._zero = self._motor.encoder.getPosition()
 
-    def findHome(self): 
+        if self._switch.isTriggered() and self._zero is None:
+            self._motor.resetEncoder()
+
+    def home(self): 
         self._holding = False
-        if self._zero is None:
-            self._motor.set_output(0.1)
-        else:
-            self._motor.set_target(self._zero)
+        self._motor.set_output(0.1)
+
+    def down(self):
+        self._holding = False
+        self._motor.set_target(self._zero)
 
     def isHomed(self):
         return self._zero is not None
