@@ -59,9 +59,9 @@ config = {
     # List of commands to bind to the robot
     # A command only has one input trigger
     "commands": [
-        # Initialize your commands here\
+        # Initialize your commands here
         FeederButtonCommand(
-            "btn3",
+            ["btn3", "btn2", "btn4"],
             motor=CANMotorSS(5, CANMotorType.SPARKFLEX),
         ),
         FeederAngleCommand(
@@ -88,16 +88,16 @@ config = {
             vertical_motor=CANMotorSS(9, CANMotorType.SPARKMAX),
             vertical_switch=DigitalIO(1),
         ),
-        # TankJoystickCommand(
-        #     ["baseForwardAxis", "baseRotationAxis", "btn9"],
-        #     [
-        #         CANMotorSS(1, CANMotorType.SPARKMAX),
-        #         CANMotorSS(2, CANMotorType.SPARKMAX),
-        #     ],
-        #     [
-        #         CANMotorSS(3, CANMotorType.SPARKMAX),
-        #         CANMotorSS(4, CANMotorType.SPARKMAX),
-        #     ],
-        # ),
+        TankJoystickCommand(
+            ["baseForwardAxis", "baseRotationAxis", "btn9"],
+            [
+                CANMotorSS(1, CANMotorType.SPARKMAX),
+                CANMotorSS(2, CANMotorType.SPARKMAX),
+            ],
+            [
+                CANMotorSS(3, CANMotorType.SPARKMAX),
+                CANMotorSS(4, CANMotorType.SPARKMAX),
+            ],
+        ),
     ],
 }

@@ -1,9 +1,10 @@
 from typing import List
-
+import math
 from commands import CommandInterface
-from subsystems import CANMotorSS, CanTankDriveSS
+from subsystems import CANMotorSS, CanTankDriveSSAnalog
 
 TAG = "TankJoystickCommand:"
+SMOOTHING = 3
 
 
 class TankJoystickCommand(CommandInterface):
@@ -19,10 +20,10 @@ class TankJoystickCommand(CommandInterface):
     ):
         """Needs two axies, forward and rotation, 3rd button is optional, will be for toggling the base"""
         super().__init__(btn_id)
-        self._drive = CanTankDriveSS(left_motors, right_motors)
+        self._drive = CanTankDriveSSAnalog(left_motors, right_motors)
         self._drive.stop()
 
-        self._rotation_axis = 0.0 # We put 0.0 to specify it is a float, this allows intellisense to kick in
+        self._rotation_axis = 0.0  # We put 0.0 to specify it is a float, this allows intellisense to kick in
         self._forward_axis = 0.0
         self._on = True
 
@@ -45,16 +46,14 @@ class TankJoystickCommand(CommandInterface):
         if index == 0 and abs(btn_v) < self._axis_deadzone:
             self._forward_axis = 0
         elif index == 0:
-            self._forward_axis = btn_v
+            self._forward_axis = math.pow(btn_v, SMOOTHING)
         elif index == 1 and abs(btn_v) < self._axis_deadzone:
             self._rotation_axis = 0
         elif index == 1:
-            self._rotation_axis = btn_v
+            self._rotation_axis = math.pow(btn_v, SMOOTHING)
 
         leftspeed = self._forward_axis + self._rotation_axis
         rightspeed = self._forward_axis - self._rotation_axis
-        leftspeed = leftspeed * 300
-        rightspeed = rightspeed * 300
 
         print(f"{TAG} Base right speed: {rightspeed}")
         print(f"{TAG} Base left speed: {btn_v}")

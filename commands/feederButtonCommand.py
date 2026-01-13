@@ -11,4 +11,9 @@ class FeederButtonCommand(CommandInterface):
         self.motor = motor
 
     def _trigger(self, btn_v: bool, index: int = 0) -> None:
-        self.motor.set_output(0.4) if btn_v else self.motor.stop()
+        if index == 0:
+            self.motor.set_output(0.4) if btn_v else self.motor.stop()
+        if index == 1:
+            self.motor.set_output(1) if btn_v else self.motor.stop()
+        if index == 2:
+            self.motor.set_output(-1) if btn_v else self.motor.stop()
