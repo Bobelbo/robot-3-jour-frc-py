@@ -31,7 +31,7 @@ class FeederAngleCommand(CommandInterface):
     def upBtn(self, value):
         """Will be used to raise and hold the ramp"""
         if value == 0:
-            self._feeder_subsystem.hold()
+            self._feeder_subsystem.stop()
         else:
             self._feeder_subsystem.up()
 

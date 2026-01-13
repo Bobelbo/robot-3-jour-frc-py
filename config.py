@@ -4,6 +4,7 @@ from commands import (
     ClimberCommand,
     FeederAngleCommand,
     FeederButtonCommand,
+    TankJoystickCommand,
     # TankJoystickCommand,
     TurretAngleCommand,
     TurretShooterCommand,
@@ -78,6 +79,7 @@ config = {
             feedMotors=[
                 CANMotorSS(11, CANMotorType.SPARKMAX),
                 CANMotorSS(12, CANMotorType.SPARKMAX),
+                CANMotorSS(13, CANMotorType.SPARKMAX),
             ],
         ),
         TurretAngleCommand(
@@ -86,5 +88,16 @@ config = {
             vertical_motor=CANMotorSS(9, CANMotorType.SPARKMAX),
             vertical_switch=DigitalIO(1),
         ),
+        # TankJoystickCommand(
+        #     ["baseForwardAxis", "baseRotationAxis", "btn9"],
+        #     [
+        #         CANMotorSS(1, CANMotorType.SPARKMAX),
+        #         CANMotorSS(2, CANMotorType.SPARKMAX),
+        #     ],
+        #     [
+        #         CANMotorSS(3, CANMotorType.SPARKMAX),
+        #         CANMotorSS(4, CANMotorType.SPARKMAX),
+        #     ],
+        # ),
     ],
 }

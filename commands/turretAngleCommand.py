@@ -7,22 +7,28 @@ TAG = "Turret Angle:"
 
 
 class TurretAngleCommand(CommandInterface):
-    _max_turret_rotation = 87
-    _max_turret_angle = 10
-
-    def __init__(self, btn_id: list[str], horizontal_motor: CANMotorSS, vertical_motor: CANMotorSS, vertical_switch: DigitalIO):
+    def __init__(
+        self,
+        btn_id: list[str],
+        horizontal_motor: CANMotorSS,
+        vertical_motor: CANMotorSS,
+        vertical_switch: DigitalIO,
+    ):
         """Can have up to 3 inputs, Horizontal, Vertical axies and toggle input"""
         super().__init__(btn_id)
 
         self._horizontal_motor = horizontal_motor
-        self._vertical_drive = VerticalTurretAngleSS(vertical_motor, vertical_switch)
+        self._vertical_motor = vertical_motor
+        # self._vertical_drive = VerticalTurretAngleSS(vertical_motor, vertical_switch)
+        self._vertical_motor.setBrakeMode(True)
 
         self._horizontal_motor.setBrakeMode(True)
 
         self._on = False
 
     def update(self):
-        self._vertical_drive.update()
+        # self._vertical_drive.update()
+        pass
 
     def _update(self, btn_v, index):
         if index == 2 and btn_v == 1:
@@ -48,10 +54,11 @@ class TurretAngleCommand(CommandInterface):
 
     def _vertical_move(self, value: float):
         inputTransform: float = 0.1
-        if abs(value) < DEADZONE:
-            # print(f"{TAG} horizontal DEADZONE reached")
-            self._vertical_drive.stop()
-            return
-        # print(f"{TAG} horizontal command: {command}")
 
-        self._vertical_drive.move(value)
+        self._vertical_motor.set_output(value * inputTransform)
+
+        # if abs(value) < DEADZONE:
+        #     self._vertical_drive.stop()
+        #     return
+
+        # self._vertical_drive.move(value)

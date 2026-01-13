@@ -26,24 +26,30 @@ class FeederAngleSS(SubsystemInterface):
 
         # Used to find deployed solution encoder state
         self._zero: Optional[float] = None
-        self._holding = False
+        self._holding: bool = False
+        self._going_down: bool = False
 
     def update(self):
         if self._holding:
             self._motor.update()
 
         if self._switch.isTriggered():
-            self._motor.stop()
             self._zero = self._motor.encoder.getPosition()
+
+        if self._switch.isTriggered() and self._going_down:
+            self._motor.stop()
 
         if self._switch.isTriggered() and self._zero is None:
             self._motor.resetEncoder()
 
     def home(self):
         self._holding = False
+        self._going_down = True
         self._motor.set_output(0.1)
 
     def down(self):
+        print("Feeder down")
+        self._going_down = True
         assert self._zero
         self._holding = False
         self._motor.set_target(self._zero)
@@ -52,10 +58,15 @@ class FeederAngleSS(SubsystemInterface):
         return self._zero is not None
 
     def up(self):
+        print("Feeder up")
+        self._going_down = False
         self._holding = False
-        self._motor.set_output(0.12)
+        self._motor.set_output(-0.30)
 
     def hold(self):
         self._holding = True
         self._motor.stop()
         self._motor.set_target(self._motor.encoder.getPosition())
+
+    def stop(self):
+        self._motor.stop()

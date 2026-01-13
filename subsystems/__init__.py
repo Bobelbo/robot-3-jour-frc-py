@@ -1,9 +1,9 @@
+from .apid import Pid
 from .canMotorSS import CANMotorSS, CANMotorType
 from .canTankDriveSS import CanTankDriveSS
 from .digitalIO import DigitalIO
-from .pid import Pid
-from .turretShooterSS import TurretShooterSS
 from .feederAngleSS import FeederAngleSS
+from .turretShooterSS import TurretShooterSS
 
 __all__ = [
     "CANMotorSS",
@@ -12,5 +12,5 @@ __all__ = [
     "Pid",
     "DigitalIO",
     "TurretShooterSS",
-    "FeederAngleSS"
+    "FeederAngleSS",
 ]

@@ -96,12 +96,18 @@ class CANMotorSS(SubsystemInterface):
         returns encoder position getter reference
         """
         return self.encoder.getPosition
-    
+
     def get_position(self) -> float:
         """
-        returns encoder position getter reference
+        returns encoder position
         """
         return self.encoder.getPosition()
+
+    def get_velocity(self) -> float:
+        """
+        returns encoder velocity
+        """
+        return self.encoder.getVelocity()
 
     def resetEncoder(self) -> None:
         """
