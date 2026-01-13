@@ -1,9 +1,4 @@
-from typing import TYPE_CHECKING
-
 from subsystems import CANMotorSS, Pid, subsystemInterface
-
-# if TYPE_CHECKING:
-#     from subsystems import Pid
 
 RPM_THRESHOLD = [5000, 6000]
 RPM_TARGET = (RPM_THRESHOLD[0] + RPM_THRESHOLD[1]) / 2

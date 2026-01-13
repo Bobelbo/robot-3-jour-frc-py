@@ -1,25 +1,28 @@
 from typing import TYPE_CHECKING, Optional
 
+from subsystems import Pid
+
 from .subsystemInterface import SubsystemInterface
 
 if TYPE_CHECKING:
-    from subsystems import CANMotorSS, DigitalIO, Pid
-
+    from subsystems import CANMotorSS, DigitalIO
 
 
 class FeederAngleSS(SubsystemInterface):
-    def __init__(self, motor: CANMotorSS, switch: DigitalIO):
+    def __init__(self, motor: "CANMotorSS", switch: "DigitalIO"):
         self._motor = motor
         self._switch = switch
 
         self._motor.setInverted(False)
         self._motor.setBrakeMode(True)
-        self._motor.set_pid(Pid(
-            self._motor.positionGetter(),
-            kp=0.0001,
-            ki=0.0000001,
-            kd=0,
-        ))
+        self._motor.set_pid(
+            Pid(
+                self._motor.positionGetter(),
+                kp=0.0001,
+                ki=0.0000001,
+                kd=0,
+            )
+        )
 
         # Used to find deployed solution encoder state
         self._zero: Optional[float] = None
@@ -36,11 +39,12 @@ class FeederAngleSS(SubsystemInterface):
         if self._switch.isTriggered() and self._zero is None:
             self._motor.resetEncoder()
 
-    def home(self): 
+    def home(self):
         self._holding = False
         self._motor.set_output(0.1)
 
     def down(self):
+        assert self._zero
         self._holding = False
         self._motor.set_target(self._zero)
 

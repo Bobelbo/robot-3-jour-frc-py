@@ -1,10 +1,8 @@
-from typing import TYPE_CHECKING
+from time import time
 
 from commands import CommandInterface
 from subsystems import CANMotorSS, TurretShooterSS
-
-# if TYPE_CHECKING:
-#     from subsystems import Pid
+from utils.logger import Logger, PublisherInterface, PublisherType
 
 RPM_THRESHOLD = [3000, 3500]
 RPM_TARGET = (RPM_THRESHOLD[0] + RPM_THRESHOLD[1]) / 2
@@ -17,14 +15,20 @@ class TurretShooterCommand(CommandInterface):
         super().__init__(button)
         self._turretSS: TurretShooterSS = TurretShooterSS(feedMotor, shootMotor)
         self._shootCommand = 0
+        self._speedPublisher: PublisherInterface = Logger.getPublisher(
+            "turret shooting speed", PublisherType.Number
+        )
+        self._lastPublish = time()
 
     def update(self) -> None:
         if self._shootCommand:
             self._turretSS.update()
             self._turretSS.shoot()
 
-    def _condition(self, btn_v, index: int) -> bool:
-        return True
+            if (self._lastPublish - time()) > 0.5:
+                self._speedPublisher.set(
+                    self._turretSS.shootMotor.velocityGetter()(), 0
+                )
 
     def _trigger(self, btn_v, index: int) -> None:
         self._shootCommand = btn_v
