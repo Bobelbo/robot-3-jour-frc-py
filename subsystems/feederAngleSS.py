@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING, Optional
 
-from subsystems import Pid
+from .baseSubsystems import Pid
 
 from .subsystemInterface import SubsystemInterface
 

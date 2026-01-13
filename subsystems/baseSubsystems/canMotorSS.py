@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING, Callable, Optional
 
 import rev
 
-from .subsystemInterface import SubsystemInterface
+from ..subsystemInterface import SubsystemInterface
 
 if TYPE_CHECKING:
     from .pid import Pid

@@ -2,7 +2,7 @@ from typing import Callable
 
 from wpimath.controller import PIDController
 
-from .subsystemInterface import SubsystemInterface
+from ..subsystemInterface import SubsystemInterface
 
 
 class Pid(SubsystemInterface):

@@ -1,4 +1,8 @@
-from subsystems import CANMotorSS, Pid, subsystemInterface
+from typing import TYPE_CHECKING
+from subsystems import Pid, subsystemInterface
+
+if TYPE_CHECKING:
+    from subsystems import CANMotorSS    
 
 RPM_THRESHOLD = [5000, 6000]
 RPM_TARGET = (RPM_THRESHOLD[0] + RPM_THRESHOLD[1]) / 2
@@ -12,7 +16,7 @@ class TurretShooterSS(subsystemInterface.SubsystemInterface):
     shootMotor: Shoots the ball
     """
 
-    def __init__(self, feedMotors: list[CANMotorSS], shootMotor: CANMotorSS):
+    def __init__(self, feedMotors: list['CANMotorSS'], shootMotor: 'CANMotorSS'):
         self._feedMotors = feedMotors
         for motor in self._feedMotors:
             motor.setBrakeMode(True)

@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING, List
 
-from .apid import Pid
+from .baseSubsystems.pid import Pid
 from .subsystemInterface import SubsystemInterface
 
 if TYPE_CHECKING:

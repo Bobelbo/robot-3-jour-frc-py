@@ -1,6 +1,6 @@
 from wpilib import DigitalInput
 
-from .subsystemInterface import SubsystemInterface
+from ..subsystemInterface import SubsystemInterface
 
 
 class DigitalIO(SubsystemInterface):
