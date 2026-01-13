@@ -24,7 +24,7 @@ class TurretAngleCommand(CommandInterface):
 
         self._horizontal_motor.setBrakeMode(True)
 
-        self._on = False
+        self._on = len(btn_id) <= 2
 
     def update(self):
         # self._vertical_drive.update()
