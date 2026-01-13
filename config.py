@@ -30,30 +30,36 @@ We want the config to remain as simple and efficient as possible so we can creat
 """
 
 # We define base wpilib instances so we do not create / destroy in each lambda call
-_input_remote = wpilib.Joystick(0)
+_driver_remote = wpilib.Joystick(0)
+_turret_remote = wpilib.Joystick(1)
 
 config = {
     # Will be used and imported directly by subsystems and modules
     "controller": {
         "axies": {
             # ID : Function inside a tuple
-            ("baseForwardAxis", lambda: _input_remote.getRawAxis(1)),
-            ("baseRotationAxis", lambda: _input_remote.getRawAxis(0)),
-            ("baseSmoothingAxis", lambda: _input_remote.getRawAxis(2)),
+            ("driverForwardAxis", lambda: _driver_remote.getRawAxis(1)),
+            ("driverRotationAxis", lambda: _driver_remote.getRawAxis(0)),
+            ("driverSmoothingAxis", lambda: _driver_remote.getRawAxis(2)),
+
+            ("turretRotationAxis", lambda: _turret_remote.getRawAxis(1)),
+            ("turretYawAxis", lambda: _turret_remote.getRawAxis(2)),
         },
         "buttons": {
             # ID : Function inside a tuple
-            ("btn1", lambda: _input_remote.getRawButton(1)),
-            ("btn2", lambda: _input_remote.getRawButton(2)),
-            ("btn3", lambda: _input_remote.getRawButton(3)),
-            ("btn4", lambda: _input_remote.getRawButton(4)),
-            ("btn5", lambda: _input_remote.getRawButton(5)),
-            ("btn6", lambda: _input_remote.getRawButton(6)),
-            ("btn7", lambda: _input_remote.getRawButton(7)),
-            ("btn8", lambda: _input_remote.getRawButton(8)),
-            ("btn9", lambda: _input_remote.getRawButton(9)),
-            ("btn10", lambda: _input_remote.getRawButton(10)),
-            ("btn11", lambda: _input_remote.getRawButton(11)),
+            ("btn1", lambda: _driver_remote.getRawButton(1)),
+            ("btn2", lambda: _driver_remote.getRawButton(2)),
+            ("btn3", lambda: _driver_remote.getRawButton(3)),
+            ("btn4", lambda: _driver_remote.getRawButton(4)),
+            ("btn5", lambda: _driver_remote.getRawButton(5)),
+            ("btn6", lambda: _driver_remote.getRawButton(6)),
+            ("btn7", lambda: _driver_remote.getRawButton(7)),
+            ("btn8", lambda: _driver_remote.getRawButton(8)),
+            ("btn9", lambda: _driver_remote.getRawButton(9)),
+            ("btn10", lambda: _driver_remote.getRawButton(10)),
+            ("btn11", lambda: _driver_remote.getRawButton(11)),
+
+            ("btnFireInTheHole", lambda: _turret_remote.getRawButton(1))
         },
     },
     # List of commands to bind to the robot
@@ -74,7 +80,7 @@ config = {
             motor=CANMotorSS(7, CANMotorType.SPARKMAX),
         ),
         TurretShooterCommand(
-            "btn1",
+            "btnFireInTheHole",
             shootMotor=CANMotorSS(10, CANMotorType.SPARKFLEX),
             feedMotors=[
                 CANMotorSS(11, CANMotorType.SPARKMAX),
@@ -83,13 +89,13 @@ config = {
             ],
         ),
         TurretAngleCommand(
-            ["baseRotationAxis", "baseForwardAxis", "btn9"],
+            ["turretRotationAxis", "turretYawAxis"],
             horizontal_motor=CANMotorSS(8, CANMotorType.SPARKMAX),
             vertical_motor=CANMotorSS(9, CANMotorType.SPARKMAX),
             vertical_switch=DigitalIO(1),
         ),
         # TankJoystickCommand(
-        #     ["baseForwardAxis", "baseRotationAxis", "btn9"],
+        #     ["driverForwardAxis", "driverRotationAxis"],
         #     [
         #         CANMotorSS(1, CANMotorType.SPARKMAX),
         #         CANMotorSS(2, CANMotorType.SPARKMAX),
