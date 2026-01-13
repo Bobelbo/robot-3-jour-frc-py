@@ -68,8 +68,8 @@ class CANMotorSS(SubsystemInterface):
             rev.PersistMode.kPersistParameters,
         )
 
-    def set_speed(self, speed: float) -> None:
-        """Sets the speed of the motor. IF the pid Has been set"""
+    def set_target(self, speed: float) -> None:
+        """Sets the speed of the motor or the position. IF the pid Has been set"""
 
         if self.pid is not None:
             self._stop = False

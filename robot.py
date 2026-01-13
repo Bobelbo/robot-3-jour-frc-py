@@ -5,8 +5,19 @@ from config import config
 from subsystems.remote import RemoteControllerSS
 
 
+"""
+The Robot class 
+"""
+
 class Robot(wpilib.TimedRobot):
+    """
+    Entrypoint of the program
+    """
     def robotInit(self):
+        """
+        We fetch the config here
+        It is here we bind and setup the command
+        """
         self._controller = RemoteControllerSS(config.get("controller"))
         self._commands: list[CommandInterface] = config["commands"]
 

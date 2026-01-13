@@ -48,7 +48,7 @@ class CanTankDriveSS(SubsystemInterface):
         """Set the speed of the left motors."""
         if speed != 0:
             for motor in self.left_motors:
-                motor.set_speed(speed)
+                motor.set_target(speed)
         else:
             for motor in self.left_motors:
                 motor.stop()
@@ -57,7 +57,7 @@ class CanTankDriveSS(SubsystemInterface):
         """Set the speed of the right motors."""
         if speed != 0:
             for motor in self.right_motors:
-                motor.set_speed(speed)
+                motor.set_target(speed)
         else:
             for motor in self.right_motors:
                 motor.stop()

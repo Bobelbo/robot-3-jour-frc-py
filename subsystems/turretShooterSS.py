@@ -32,7 +32,7 @@ class TurretShooterSS(subsystemInterface.SubsystemInterface):
         self.shootMotor.update()
 
     def shoot(self) -> None:
-        self.shootMotor.set_speed(RPM_TARGET)
+        self.shootMotor.set_target(RPM_TARGET)
         rpm = self.shootMotor.velocityGetter()()
 
         if (rpm > RPM_THRESHOLD[0]) and (rpm < RPM_THRESHOLD[1]):

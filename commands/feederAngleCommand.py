@@ -1,5 +1,5 @@
 from commands import CommandInterface
-from subsystems import CANMotorSS, DigitalIO
+from subsystems import FeederAngleSS, CANMotorSS, DigitalIO
 
 TAG = "FEEDER ANGLE:"
 
@@ -10,38 +10,30 @@ class FeederAngleCommand(CommandInterface):
     def __init__(self, btns: list[str], motor: CANMotorSS, deployed_limit_switch: DigitalIO):
         """Needs two buttons, one up and one down"""
         super().__init__(btns)
-        self._motor = motor
-        self._ref = 0
-        self._isHomed: bool = False
-        self._switch = deployed_limit_switch
+        self._feeder_subsystem = FeederAngleSS(motor, deployed_limit_switch)
         print(f"{TAG} Initialized")
 
-    def _update(self, btn_v, index: int) -> None:
-        if not self._isHomed:
-            self._homing()
-        else:
-            self._motor.update()
+    def update(self, btn_v, index: int) -> None:
+        self._feeder_subsystem.update()
+
+        if not self._feeder_subsystem.isHomed():
+            self._feeder_subsystem.findHome()
 
     def _trigger(self, btn_v, index: int = 0) -> None:
-        print(f"{TAG} dio state: {self._switch.isTriggered()}")
         # Up = 0 down = 1
-        if btn_v == 1:
-            if index == 0:
-                self._goUp()
-            elif index == 1:
-                self._goDown()
+        if index == 0:
+            self.upBtn(btn_v)
+        elif index == 1:
+            self.downBtn(btn_v)
+
+    def upBtn(self, value):
+        """Will be used to raise and hold the ramp"""
+        if value == 0:
+            self._feeder_subsystem.hold()
         else:
-            self._motor.stop()
+            self._feeder_subsystem.up()
 
-    def _goUp(self, mult: float = 1.0):
-        self._motor.set_output(-0.2 * mult)
-
-    def _goDown(self, mult: float = 1.0):
-        if not self._switch.isTriggered():
-            self._motor.set_output(0.1 * mult)
-
-    def _homing(self):
-        if self._switch.isTriggered():
-            self._motor.stop()
-            self._motor.resetEncoder()
-            self._isHomed = True
+    def downBtn(self, value):
+        """If we click the down button it is because we want the feeder to the floor"""
+        if value == 1:
+            self._feeder_subsystem.findHome()
