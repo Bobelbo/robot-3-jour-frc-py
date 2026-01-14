@@ -33,6 +33,8 @@ We want the config to remain as simple and efficient as possible so we can creat
 _driver_remote = wpilib.Joystick(0)
 _turret_remote = wpilib.Joystick(1)
 
+print(_turret_remote.getName())
+
 config = {
     # Will be used and imported directly by subsystems and modules
     "controller": {
@@ -42,8 +44,8 @@ config = {
             ("driverRotationAxis", lambda: _driver_remote.getRawAxis(0)),
             ("driverSmoothingAxis", lambda: _driver_remote.getRawAxis(2)),
 
-            ("turretRotationAxis", lambda: _turret_remote.getRawAxis(1)),
-            ("turretYawAxis", lambda: _turret_remote.getRawAxis(2)),
+            ("turretRotationAxis", lambda: _turret_remote.getRawAxis(0)),
+            ("turretYawAxis", lambda: _turret_remote.getRawAxis(3)),
         },
         "buttons": {
             # ID : Function inside a tuple
@@ -59,7 +61,7 @@ config = {
             ("btn10", lambda: _driver_remote.getRawButton(10)),
             ("btn11", lambda: _driver_remote.getRawButton(11)),
 
-            ("btnFireInTheHole", lambda: _turret_remote.getRawButton(1))
+            ("btnFireInTheHole", lambda: _turret_remote.getRawButton(8))
         },
     },
     # List of commands to bind to the robot

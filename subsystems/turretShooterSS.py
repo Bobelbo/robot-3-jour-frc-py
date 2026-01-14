@@ -4,9 +4,9 @@ from subsystems import Pid, subsystemInterface
 if TYPE_CHECKING:
     from subsystems import CANMotorSS
 
-RPM_THRESHOLD = [4000, 5000]
+RPM_THRESHOLD = [3300, 4300]
 RPM_TARGET = (RPM_THRESHOLD[0] + RPM_THRESHOLD[1]) / 2
-FEED_MOTOR_STRENGTH = [0.3, -1, -0.5]
+FEED_MOTOR_STRENGTH = [0.5, -1, -0.8]
 
 
 class TurretShooterSS(subsystemInterface.SubsystemInterface):

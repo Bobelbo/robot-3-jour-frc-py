@@ -16,10 +16,11 @@ class FeederAngleCommand(CommandInterface):
         print(f"{TAG} Initialized")
 
     def update(self) -> None:
-        self._feeder_subsystem.update()
+        # self._feeder_subsystem.update()
 
-        if not self._feeder_subsystem.isHomed():
-            self._feeder_subsystem.home()
+        # if not self._feeder_subsystem.isHomed():
+        #     self._feeder_subsystem.home()
+        pass
 
     def _trigger(self, btn_v, index: int = 0) -> None:
         # Up = 0 down = 1
@@ -39,3 +40,5 @@ class FeederAngleCommand(CommandInterface):
         """If we click the down button it is because we want the feeder to the floor"""
         if value == 1:
             self._feeder_subsystem.down()
+        else:
+            self._feeder_subsystem.stop()

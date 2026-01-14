@@ -2,7 +2,7 @@ from commands import CommandInterface
 from subsystems import CANMotorSS, DigitalIO
 from subsystems.verticalTurretAngleSS import VerticalTurretAngleSS
 
-DEADZONE = 0.2
+DEADZONE = 0.3
 TAG = "Turret Angle:"
 
 
@@ -38,13 +38,13 @@ class TurretAngleCommand(CommandInterface):
         return self._on
 
     def _trigger(self, btn_v, index) -> None:
-        if index == 0 and abs(btn_v):
+        if index == 0:
             self._horizontal_move(btn_v)
-        if index == 1 and abs(btn_v):
+        if index == 1:
             self._vertical_move(btn_v)
 
     def _horizontal_move(self, value: float):
-        inputTransform: float = 0.1
+        inputTransform: float = 0.06
         if abs(value) < DEADZONE:
             self._horizontal_motor.stop()
             return
@@ -53,12 +53,12 @@ class TurretAngleCommand(CommandInterface):
         self._horizontal_motor.set_output(value)
 
     def _vertical_move(self, value: float):
-        inputTransform: float = 0.1
+        inputTransform: float = 0.06
+
+        if abs(value) < DEADZONE:
+            self._vertical_motor.stop()
+            return
 
         self._vertical_motor.set_output(value * inputTransform)
-
-        # if abs(value) < DEADZONE:
-        #     self._vertical_drive.stop()
-        #     return
 
         # self._vertical_drive.move(value)
